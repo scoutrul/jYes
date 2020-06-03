@@ -1,15 +1,16 @@
 <template lang="pug">
-  gb-button hello!
+  .container
+    gb-button hello!
+    gb-heading(tag='h1') how are you
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
-export default {
-  components: {
-    Logo
-  }
-}
+export default {}
 </script>
 
-<style></style>
+<style>
+.container {
+  width: 100%;
+  max-width: 900px;
+}
+</style>
