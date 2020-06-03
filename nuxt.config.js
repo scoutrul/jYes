@@ -27,7 +27,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '@/plugins/vuedarkmode.js' }],
+  plugins: ['~plugins/vuedarkmode.js', '~/plugins/firebase.js'],
   /*
    ** Nuxt.js dev-modules
    */

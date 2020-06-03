@@ -16,6 +16,7 @@
     "@growthbunker/vuedarkmode": "^0.5.56",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "firebase": "^7.14.6",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
