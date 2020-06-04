@@ -1,36 +1,37 @@
 <template lang="pug">
   .container
-    gb-button hello!
-    gb-heading(tag='h1') how are you
+    CreatePost(:tagList="docs.tags")
+    gb-divider(size="large" color="purple")
+    .posts
+      .post(v-for="post in docs.posts")
+        gb-heading(tag='h3') {{post.title}}
+        gb-button(@click="deletePost({ id: post.id})") Delete
+        .body {{ post.body}}
+        .tags
+          .tag(v-for="tag in post.tags")
+            gb-badge(size='micro') {{ tag }}
+        gb-divider(size="large" color="turquoise")
 </template>
 
 <script>
-import { fireDb } from '~/plugins/firebase.js'
+import crud from '~/mixins/crud.js'
+import CreatePost from '~/components/CreatePost'
 export default {
-  data() {
-    return {
-      writeSuccessful: false,
-      tags: null
-    }
+  components: { CreatePost },
+  extends: crud,
+  async fetch() {
+    await this.getDocsFromCollection({ ref: 'tags' })
+    await this.getDocsFromCollection({ ref: 'posts' })
   },
-  async mounted() {
-    await this.readFromFirestore()
+  mounted() {
+    this.$nextTick()
   },
   methods: {
-    async readFromFirestore() {
-      const ref = fireDb.collection('tags')
-      try {
-        await ref.get().then((snapshot) => {
-          const tags = []
-          snapshot.forEach((doc) => {
-            console.log(doc.id, '=>', doc.data())
-            tags.push(doc.data())
-          })
-          this.tags = tags
-        })
-      } catch (err) {
-        console.log('Error getting documents', err)
-      }
+    async deletePost({ id }) {
+      await this.deleteDoc({
+        ref: 'posts',
+        id
+      })
     }
   }
 }

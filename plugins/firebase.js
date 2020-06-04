@@ -11,9 +11,9 @@ if (!firebase.apps.length) {
     appId: '1:159147139958:web:c25af1cc56ce1c8ab69057'
   }
   firebase.initializeApp(config)
-  firebase.firestore().settings({ timestampsInSnapshots: true })
 }
 const fireDb = firebase.firestore()
 export { fireDb }
 
 // https://medium.com/@pascalluther/nuxt-js-v2-firestore-ssr-938d8fb7d2b0
+// https://firebase.google.com/docs/firestore/query-data/get-data#node.js_1

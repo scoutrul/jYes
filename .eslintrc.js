@@ -17,6 +17,6 @@ module.exports = {
   plugins: ['prettier'],
   // add your custom rules here
   rules: {
-    'no-unused-vars': '2'
+    'no-unused-vars': 0
   }
 }

@@ -1,0 +1,37 @@
+<template lang="pug">
+  .container
+    gb-input(v-model="title" label="Заголовок")
+    gb-textarea(v-model="body" label="Содержимое")
+    gb-divider(color="blue")
+    gb-checkbox(v-for="tag in tagList" v-model="tags[tag.id]" :key="tag.id" :name="tag.name" :label="tag.title")
+    gb-divider(color="green")
+    gb-button(@click="createPost()") add document
+
+</template>
+
+<script>
+import crud from '~/mixins/crud.js'
+export default {
+  extends: crud,
+  props: ['tagList'],
+  data: () => ({
+    title: 'new post',
+    body: 'hello world!',
+    tags: {}
+  }),
+
+  methods: {
+    async createPost() {
+      const tags = Object.entries(this.tags)
+        .filter(([k, v]) => v)
+        .map((tag) => tag[0])
+      await this.creatDoc({
+        ref: 'posts',
+        doc: this.postData({ title: 'nezxt shit', tags })
+      })
+    }
+  }
+}
+</script>
+
+<style></style>
