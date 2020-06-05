@@ -1,7 +1,7 @@
 <template lang="pug">
   client-only
     gb-alert(
-      v-show="$store.state.alert.show"
+      :class="$store.state.alert.show ? 'active' : 'notactive'"
       :text="$store.state.alert.text"
       :color='$store.state.alert.color'
       :closable="true"
@@ -20,11 +20,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .alert {
   position: fixed;
-  bottom: 10px;
-  left: 10px;
-  transition: 0.3 ease;
+  z-index: 1000;
+  bottom: -100px;
+  left: 24px;
+}
+.active {
+  bottom: 24px;
 }
 </style>
