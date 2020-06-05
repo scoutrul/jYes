@@ -21,6 +21,9 @@ export default {
     await this.$store.dispatch('fetchPosts', { ref: 'tags' })
     await this.$store.dispatch('fetchPosts', { ref: 'posts' })
   },
+  data: () => ({
+    showAlert: true
+  }),
 
   methods: {
     async deletePost({ id }) {
@@ -28,6 +31,10 @@ export default {
         ref: 'posts',
         id
       })
+    },
+    onAlertClose() {
+      console.log('close')
+      this.showAlert = false
     }
   }
 }

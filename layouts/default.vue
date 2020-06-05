@@ -1,9 +1,15 @@
 <template lang="pug">
   .mainClass
+    Alert
     nuxt
 
 </template>
-
+<script>
+import Alert from '~/components/Alert'
+export default {
+  components: { Alert }
+}
+</script>
 <style>
 body {
   margin: 0;
