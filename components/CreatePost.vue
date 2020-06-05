@@ -10,9 +10,7 @@
 </template>
 
 <script>
-import crud from '~/mixins/crud.js'
 export default {
-  extends: crud,
   props: ['tagList'],
   data: () => ({
     title: 'new post',
@@ -25,10 +23,23 @@ export default {
       const tags = Object.entries(this.tags)
         .filter(([k, v]) => v)
         .map((tag) => tag[0])
-      await this.creatDoc({
+      await this.$store.dispatch('createDoc', {
         ref: 'posts',
         doc: this.postData({ title: 'nezxt shit', tags })
       })
+    },
+    postData({
+      title = 'new post',
+      authorId = 'admin',
+      tags = ['other'],
+      body = 'body'
+    }) {
+      return {
+        title,
+        authorId,
+        tags,
+        body
+      }
     }
   }
 }

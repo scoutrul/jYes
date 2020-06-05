@@ -1,9 +1,9 @@
 <template lang="pug">
   .container
-    CreatePost(:tagList="docs.tags")
+    CreatePost(:tagList="$store.state.docs.tags")
     gb-divider(size="large" color="purple")
     .posts
-      .post(v-for="post in docs.posts")
+      .post(v-for="post in $store.state.docs.posts")
         gb-heading(tag='h3') {{post.title}}
         gb-button(@click="deletePost({ id: post.id})") Delete
         .body {{ post.body}}
@@ -14,21 +14,17 @@
 </template>
 
 <script>
-import crud from '~/mixins/crud.js'
 import CreatePost from '~/components/CreatePost'
 export default {
   components: { CreatePost },
-  extends: crud,
   async fetch() {
-    await this.getDocsFromCollection({ ref: 'tags' })
-    await this.getDocsFromCollection({ ref: 'posts' })
+    await this.$store.dispatch('fetchPosts', { ref: 'tags' })
+    await this.$store.dispatch('fetchPosts', { ref: 'posts' })
   },
-  mounted() {
-    this.$nextTick()
-  },
+
   methods: {
     async deletePost({ id }) {
-      await this.deleteDoc({
+      await this.$store.dispatch('deleteDoc', {
         ref: 'posts',
         id
       })
