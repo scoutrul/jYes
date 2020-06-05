@@ -1,18 +1,20 @@
 <template lang="pug">
   client-only
-    gb-alert(color='blue' :closable="true" v-show="showAlert" @close="onAlertClose").alert My Toast
+    gb-alert(
+      v-show="$store.state.alert.show"
+      :text="$store.state.alert.text"
+      :color='$store.state.alert.color'
+      :closable="true"
+      @close="onAlertClose"
+      ).alert {{ $store.state.alert.text }}
 </template>
 
 <script>
 export default {
-  data: () => ({
-    showAlert: true
-  }),
-
   methods: {
     onAlertClose() {
       console.log('close')
-      this.showAlert = false
+      this.$store.commit('HIDE_ALERT')
     }
   }
 }
