@@ -10,11 +10,13 @@
         .tags
           .tag(v-for="tag in post.tags")
             gb-badge(size='micro') {{ tag }}
+
         gb-divider(size="large" color="turquoise")
 </template>
 
 <script>
 import CreatePost from '~/components/CreatePost'
+
 export default {
   components: { CreatePost },
   async fetch() {
@@ -32,6 +34,7 @@ export default {
         id
       })
     },
+
     onAlertClose() {
       console.log('close')
       this.showAlert = false

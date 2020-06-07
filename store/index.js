@@ -51,7 +51,7 @@ export const actions = {
       await collection.get().then((snapshot) => {
         const docs = []
         snapshot.forEach((doc) => {
-          console.log(doc.id, '=>', doc.data())
+          console.log(ref, doc.id, '=>', doc.data())
           docs.push({ ...doc.data(), id: doc.id })
         })
         commit('STORE_DOCS', { ref, docs })

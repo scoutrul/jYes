@@ -3,14 +3,19 @@
     gb-input(v-model="title" label="Заголовок")
     gb-textarea(v-model="body" label="Содержимое")
     gb-divider(color="blue")
-    gb-checkbox(v-for="tag in tagList" v-model="tags[tag.id]" :key="tag.id" :name="tag.name" :label="tag.title")
+    span(v-for="tag in tagList" )
+      gb-checkbox(v-model="tags[tag.id]" :key="tag.id" :name="tag.name" :label="tag.title")
+      gb-button(size='micro' @click="deleteTag({ id: tag.id})") Удалить таг
+    CreateTag
     gb-divider(color="green")
-    gb-button(@click="createPost()") add document
+    gb-button(@click="createPost()") Добавить пост
 
 </template>
 
 <script>
+import CreateTag from '~/components/CreateTag'
 export default {
+  components: { CreateTag },
   props: ['tagList'],
   data: () => ({
     title: 'new post',
@@ -40,6 +45,12 @@ export default {
         tags,
         body
       }
+    },
+    async deleteTag({ id }) {
+      await this.$store.dispatch('deleteDoc', {
+        ref: 'tags',
+        id
+      })
     }
   }
 }
