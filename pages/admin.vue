@@ -1,20 +1,26 @@
 <template lang="pug">
   .admin
     .menu menu дшые
-    .docList doclist
+    DocList(:docs="getActualPost").docList
     .edit edit window
 </template>
 
 <script>
-import CreatePost from '~/components/CreatePost'
+import dayjs from 'dayjs'
+import DocList from '~/components/admin/DocList'
 
 export default {
-  components: { CreatePost },
+  components: { DocList },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
   },
-  data: () => ({})
+  data: () => ({}),
+  computed: {
+    getActualPost() {
+      return this.$store.state.docs.posts
+    }
+  }
 }
 </script>
 
