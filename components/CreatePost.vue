@@ -3,9 +3,10 @@
     gb-input(v-model="title" label="Заголовок")
     gb-textarea(v-model="body" label="Содержимое")
     gb-divider(color="blue")
-    span(v-for="tag in tagList" )
-      gb-checkbox(v-model="tags[tag.id]" :key="tag.id" :name="tag.name" :label="tag.title")
-      gb-button(size='micro' @click="deleteTag({ id: tag.id})") Удалить таг
+    .tagList
+      .tag(v-for="tag in tagList" :key="tag.id")
+        gb-checkbox(v-model="tagsmodel[tag.id]" :label="tag.title" @change="selectTag(tag)")
+        gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
     CreateTag
     gb-divider(color="green")
     gb-button(@click="createPost()") Добавить пост
@@ -20,14 +21,18 @@ export default {
   data: () => ({
     title: 'new post',
     body: 'hello world!',
+    tagsmodel: {},
     tags: {}
   }),
 
   methods: {
+    selectTag(tag, event) {
+      this.tags[tag.id] = tag
+    },
     async createPost() {
-      const tags = Object.entries(this.tags)
+      const tags = Object.entries(this.tagsmodel)
         .filter(([k, v]) => v)
-        .map((tag) => tag[0])
+        .map(([k, v]) => this.tags[k])
       await this.$store.dispatch('createDoc', {
         ref: 'posts',
         doc: this.postData({ title: 'nezxt shit', tags })

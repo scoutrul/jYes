@@ -45,7 +45,7 @@ export const actions = {
       commit('HIDE_ALERT')
     }, 3000)
   },
-  async fetchPosts({ commit, dispatch }, { ref }) {
+  async fetchDocs({ commit, dispatch }, { ref }) {
     commit('LOADING_START')
     const collection = await fireDb.collection(ref)
     try {
@@ -77,7 +77,7 @@ export const actions = {
       await collection.add(docWithDate).then(async (snapshot) => {
         dispatch('showAlert', { text: 'Added document' })
         console.log('Added document', snapshot)
-        await dispatch('fetchPosts', { ref })
+        await dispatch('fetchDocs', { ref })
       })
     } catch (err) {
       dispatch('showAlert', { text: 'Error createDoc documents', color: 'red' })
@@ -106,7 +106,7 @@ export const actions = {
       })
       console.log(err)
     } finally {
-      await dispatch('fetchPosts', { ref })
+      await dispatch('fetchDocs', { ref })
       commit('LOADING_FINISH')
     }
   }

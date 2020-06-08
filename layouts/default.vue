@@ -2,7 +2,6 @@
   .mainClass
     Alert
     nuxt
-
 </template>
 <script>
 import Alert from '~/components/Alert'

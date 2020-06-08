@@ -11,8 +11,8 @@ import CreatePost from '~/components/CreatePost'
 export default {
   components: { CreatePost },
   async fetch() {
-    await this.$store.dispatch('fetchPosts', { ref: 'tags' })
-    await this.$store.dispatch('fetchPosts', { ref: 'posts' })
+    await this.$store.dispatch('fetchDocs', { ref: 'tags' })
+    await this.$store.dispatch('fetchDocs', { ref: 'posts' })
   },
   data: () => ({})
 }
