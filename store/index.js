@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { fireDb } from '~/plugins/firebase.js'
 
 export const state = () => ({
@@ -67,10 +68,13 @@ export const actions = {
     }
   },
   async createDoc({ dispatch, commit }, { ref, doc }) {
+    const timestamp = dayjs().format()
+    const docWithDate = { ...doc, timestamp }
+
     commit('LOADING_START')
     const collection = await fireDb.collection(ref)
     try {
-      await collection.add(doc).then(async (snapshot) => {
+      await collection.add(docWithDate).then(async (snapshot) => {
         dispatch('showAlert', { text: 'Added document' })
         console.log('Added document', snapshot)
         await dispatch('fetchPosts', { ref })
