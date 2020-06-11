@@ -1,26 +1,22 @@
 <template lang="pug">
   .admin
     .menu menu дшые
-    DocList(:docs="getActualPost").docList
-    .edit edit window
+    DocList(:docs="$store.state.docs.posts").docList
+    EditZone(:doc="$store.state.admin.editDoc").editZone
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import DocList from '~/components/admin/DocList'
+import EditZone from '~/components/admin/EditZone'
 
 export default {
-  components: { DocList },
+  components: { DocList, EditZone },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
   },
   data: () => ({}),
-  computed: {
-    getActualPost() {
-      return this.$store.state.docs.posts
-    }
-  }
+  computed: {}
 }
 </script>
 
