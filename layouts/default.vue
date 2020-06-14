@@ -13,7 +13,10 @@ export default {
 body {
   margin: 0;
 }
-
+.container {
+  width: 100%;
+  max-width: 900px;
+}
 .mainClass {
   position: absolute;
   top: 0;

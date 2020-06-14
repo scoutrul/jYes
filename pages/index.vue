@@ -38,9 +38,4 @@ export default {
 }
 </script>
 
-<style>
-.container {
-  width: 100%;
-  max-width: 900px;
-}
-</style>
+<style scoped></style>
