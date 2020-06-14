@@ -10,6 +10,9 @@ export const state = () => ({
   alert: {
     text: '',
     show: false
+  },
+  admin: {
+    editDoc: null
   }
 })
 
@@ -32,6 +35,10 @@ export const mutations = {
 
   HIDE_ALERT(state) {
     state.alert.show = false
+  },
+
+  SET_EDIT_DOC(state, doc) {
+    state.admin.editDoc = doc
   }
 }
 
