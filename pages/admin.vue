@@ -1,8 +1,10 @@
 <template lang="pug">
   .admin
-    .menu menu дшые
-    DocList(:docs="$store.state.docs.posts").docList
-    EditZone(:doc="$store.state.admin.editDoc").editZone
+    .menu
+      gb-heading(tag="h6" color="white") Посты
+      gb-heading(tag="h6" color="white") Таги
+    DocList().docList
+    EditZone().editZone
 </template>
 
 <script>

@@ -1,9 +1,9 @@
 <template lang="pug">
   div
-    CreatePost(:tagList="$store.state.docs.tags" v-if="newDocModal")
-    gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc()") Добавить
+    CreatePost(:opened="newDocModal")
+    gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="newDocModal") Добавить
     gb-divider(color="yellow")
-    .doc(v-for="doc in docs" :key="doc.id" @click="editDoc(doc)")
+    .doc(v-for="doc in $store.state.docs.posts" :key="doc.id" @click="editDoc(doc)")
       gb-heading(tag="h6" color="orange") {{ doc.title }}
       gb-heading(tag="small" color="grey") {{ dateFormat(doc.timestamp) }}
       gb-divider(color="yellow")
@@ -11,15 +11,15 @@
 
 <script>
 import dayjs from 'dayjs'
+import CreatePost from '~/components/admin/CreatePost'
 
 export default {
-  props: ['docs'],
+  components: {
+    CreatePost
+  },
   data: () => ({
     newDocModal: false
   }),
-  components: {
-    CreatePost: ()  => import('~/components/CreatePost')
-  },
   computed: {
     dateFormat() {
       return (date) => {
@@ -27,11 +27,17 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$on('closeModal', this.closeCreateDoc)
+  },
   methods: {
-    openCreateDoc(){
+    openCreateDoc() {
       this.newDocModal = true
     },
-    editDoc(doc){
+    closeCreateDoc() {
+      this.newDocModal = false
+    },
+    editDoc(doc) {
       this.$store.commit('SET_EDIT_DOC', doc)
     }
   }

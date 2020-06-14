@@ -10,21 +10,16 @@
 </template>
 
 <script>
-
 import TagList from '~/components/tags/TagList'
 
 export default {
-  components: { CreatePost },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
   },
   data: () => ({}),
 
-  methods: {
-
-
-  }
+  methods: {}
 }
 </script>
 
