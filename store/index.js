@@ -12,7 +12,7 @@ export const state = () => ({
     show: false
   },
   admin: {
-    editDoc: null
+    editDoc: {}
   }
 })
 
@@ -88,6 +88,25 @@ export const actions = {
       })
     } catch (err) {
       dispatch('showAlert', { text: 'Error createDoc documents', color: 'red' })
+      console.log(err)
+    } finally {
+      commit('LOADING_FINISH')
+    }
+  },
+  async updateDoc({ dispatch, commit }, { ref, doc }) {
+    const timestamp = dayjs().format()
+    const docWithDate = { ...doc, timestamp }
+
+    commit('LOADING_START')
+    const collection = await fireDb.collection(ref).doc(doc.id)
+    try {
+      await collection.add(docWithDate).then(async (snapshot) => {
+        dispatch('showAlert', { text: 'Added document' })
+        console.log('Updated document', snapshot)
+        await dispatch('fetchDocs', { ref })
+      })
+    } catch (err) {
+      dispatch('showAlert', { text: 'Error update documents', color: 'red' })
       console.log(err)
     } finally {
       commit('LOADING_FINISH')

@@ -4,7 +4,7 @@
       gb-heading(tag="h6" color="white") Посты
       gb-heading(tag="h6" color="white") Таги
     DocList().docList
-    EditZone().editZone
+    EditZone(:doc="$store.state.admin.editDoc" v-if="$store.state.admin.editDoc.id").editZone
 </template>
 
 <script>

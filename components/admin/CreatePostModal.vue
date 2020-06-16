@@ -6,13 +6,16 @@
       gb-divider(color="blue")
       gb-checkbox(v-for="tag in $store.state.docs.tags" v-model="tags[tag.id]" :key="tag.id" :name="tag.id" :label="tag.title")
       gb-divider(color="green")
+      CreateTag
       gb-button(@click="createPost" :disabled="$store.state.loading") add document
       gb-button(@click="closeModal").closeBtn x
 
 </template>
 
 <script>
+import CreateTag from '@/components/tags/CreateTag'
 export default {
+  components: { CreateTag },
   props: {
     opened: {
       type: Boolean,
@@ -35,7 +38,11 @@ export default {
         .map((tag) => tag[0])
       await this.$store.dispatch('createDoc', {
         ref: 'posts',
-        doc: this.postData({ title: 'nezxt shit', tags })
+        doc: this.postData({
+          title: this.title,
+          tags: this.tags,
+          body: this.body
+        })
       })
       this.closeModal()
     },

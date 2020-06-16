@@ -1,5 +1,5 @@
 <template lang="pug">
-  .container
+  div
     gb-input(v-model="title" label="Новый тэг")
     gb-button(@click="createTag()") Добавить таг
 </template>

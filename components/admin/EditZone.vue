@@ -1,10 +1,15 @@
 <template lang="pug">
   div
-    gb-heading(tag='h3') {{doc.title}}
-    .body {{ doc.body}}
-    TagList(:tags="doc.tags")
-    gb-button(@click="createPost()") Добавить пост
-    gb-button(@click="deletedoc({ id: doc.id})") Delete
+    gb-heading(tag='h3') {{ doc.id }}
+    gb-input(v-model="editedDoc.title" label="Заголовок")
+    gb-textarea(v-model="editedDoc.body" label="Содержимое")
+    gb-divider(color="blue")
+    .tagList(v-if="getTags.length")
+      .tag(v-for="tag in getTags" :key="tag.id")
+        gb-checkbox(:label="tag.title" @change="selectTag(tag)" :value="tag.selected")
+        gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
+    gb-button(@click="updatePost()") Сохранить
+    gb-button(@click="deleteDoc({ id: doc.id})") Delete
 </template>
 
 <script>
@@ -15,29 +20,78 @@ export default {
     doc: {
       type: Object,
       default: () => {
-        return { title: 'Title', id: 123, tags: ['notag'], body: 'body' }
+        return {
+          title: 'Title',
+          id: 123,
+          tags: [{ title: 'some', id: 123 }],
+          body: 'body'
+        }
       }
     }
   },
   data: () => ({
-    title: 'new post',
-    body: 'hello world!',
-    tagsmodel: {},
-    tags: {}
+    editedDoc: {
+      tags: [{ title: '', id: 123 }],
+      title: '',
+      body: '',
+      selectedTags: []
+    },
+    tagsmodel: {}
   }),
+  computed: {
+    getTags() {
+      const docTags = this.doc.tags
+      const tagList = this.$store.state.docs.tags
+      const list = tagList.map((item) => {
+        const tag = item
+        // eslint-disable-next-line no-prototype-builtins
+        if (docTags.hasOwnProperty(item.id) && docTags[item.id]) {
+          tag.selected = true
+        } else {
+          tag.selected = false
+        }
+        return tag
+      })
+
+      return list
+    }
+  },
+  watch: {
+    doc(val, old) {
+      this.editedDoc = val
+    }
+  },
   mounted() {
-    this.title = this.doc.title
-    this.body = this.doc.body
-    this.tags = this.doc.tags
+    this.editedDoc = this.doc
   },
   methods: {
-    async createPost() {
-      const tags = Object.entries(this.tagsmodel)
+    async deleteTag({ id }) {
+      await this.$store.dispatch('deleteDoc', {
+        ref: 'tags',
+        id
+      })
+    },
+    selectTag(tag, event) {
+      this.editedDoc.selectedTags = [this.editedDoc.selectedTags, tag]
+    },
+    async deleteDoc({ id }) {
+      await this.$store.dispatch('deleteDoc', {
+        ref: 'posts',
+        id
+      })
+    },
+    async updatePost() {
+      const tags = Object.entries(this.editedDoc.selectedTags)
         .filter(([k, v]) => v)
         .map((k) => this.tags[k])
-      await this.$store.dispatch('createDoc', {
+      await this.$store.dispatch('updateDoc', {
         ref: 'posts',
-        doc: this.postData({ title: 'nezxt shit', tags })
+        doc: this.postData({
+          ...this.doc,
+          title: this.editedDoc.title,
+          body: this.editedDoc.body,
+          tags
+        })
       })
     },
     postData({
@@ -52,12 +106,6 @@ export default {
         tags,
         body
       }
-    },
-    async deletePost({ id }) {
-      await this.$store.dispatch('deleteDoc', {
-        ref: 'posts',
-        id
-      })
     }
   }
 }
