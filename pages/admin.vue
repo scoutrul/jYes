@@ -1,10 +1,15 @@
 <template lang="pug">
   .admin
     .menu
-      gb-heading(tag="h6" color="white") Посты
-      gb-heading(tag="h6" color="white") Таги
+      gb-heading(
+        tag="h6" 
+        color="white" 
+        v-for="category in $store.state.admin.categories" 
+        :key="category.ref"
+        @click="setCategory(category.ref)"
+        :class="{active : (category.ref === $store.state.admin.activeCategory)}") {{ category.name }}
     DocList().docList
-    EditZone(:doc="$store.state.admin.editDoc" v-if="$store.state.admin.editDoc.id").editZone
+    EditZone(:doc="$store.state.admin.editDoc").editZone
 </template>
 
 <script>
@@ -18,7 +23,12 @@ export default {
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
   },
   data: () => ({}),
-  computed: {}
+  computed: {},
+  methods: {
+    setCategory(ref) {
+      this.$store.commit('SET_CATEGORY', ref)
+    }
+  }
 }
 </script>
 
@@ -35,5 +45,8 @@ export default {
 }
 .edit {
   width: 100%;
+}
+.active {
+  background: darkslategrey;
 }
 </style>

@@ -1,10 +1,12 @@
 <template lang="pug">
   div
-    CreatePostModal(:opened="newDocModal")
+    CreateModal(:opened="newDocModal")
+      CreatePostModal(v-if="checkCategory('post')")
+      CreateTag(v-if="checkCategory('tags')")
     gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="newDocModal") Добавить
     gb-divider(color="yellow")
-    template(v-if="$store.state.docs.posts.length")
-      .doc(v-for="doc in $store.state.docs.posts" :key="doc.id" @click="editDoc(doc)" :class="{active : (doc.id === $store.state.admin.editDoc.id)}")
+    template(v-if="getDocs.length")
+      .doc(v-for="doc in getDocs" :key="doc.id" @click="editDoc(doc)" :class="{active : (doc.id === $store.state.admin.editDoc.id)}")
         gb-heading(tag="h6" color="orange" ) {{ doc.title }}
         gb-heading(tag="small" color="grey") {{ dateFormat(doc.timestamp) }}
         gb-divider(color="yellow")
@@ -12,12 +14,18 @@
 
 <script>
 import dayjs from 'dayjs'
+import CreateModal from '~/components/admin/CreateModal'
 import CreatePostModal from '~/components/admin/CreatePostModal'
+import CreateTag from '~/components/tags/CreateTag'
+import helpers from '~/mixins/helpers.js'
 
 export default {
   components: {
-    CreatePostModal
+    CreateModal,
+    CreatePostModal,
+    CreateTag
   },
+  mixins: [helpers],
   data: () => ({
     newDocModal: false
   }),
@@ -26,6 +34,10 @@ export default {
       return (date) => {
         return dayjs(date).format('DD/MM/YYYY')
       }
+    },
+    getDocs() {
+      const ref = this.$store.state.admin.activeCategory
+      return this.$store.state.docs[ref]
     }
   },
   mounted() {

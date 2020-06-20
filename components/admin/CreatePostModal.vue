@@ -1,14 +1,12 @@
 <template lang="pug">
-  .modal(:class="{active : opened}")
-    .container
-      gb-input(v-model="title" label="Заголовок")
-      gb-textarea(v-model="body" label="Содержимое")
-      gb-divider(color="blue")
-      gb-checkbox(v-for="tag in $store.state.docs.tags" v-model="tags[tag.id]" :key="tag.id" :name="tag.id" :label="tag.title")
-      gb-divider(color="green")
-      CreateTag
-      gb-button(@click="createPost" :disabled="$store.state.loading") add document
-      gb-button(@click="closeModal").closeBtn x
+  div
+    gb-input(v-model="title" label="Заголовок")
+    gb-textarea(v-model="body" label="Содержимое")
+    gb-divider(color="blue")
+    gb-checkbox(v-for="tag in $store.state.docs.tags" v-model="tags[tag.id]" :key="tag.id" :name="tag.id" :label="tag.title")
+    gb-divider(color="green")
+    CreateTag
+    gb-button(@click="createPost" :disabled="$store.state.loading") add document
 
 </template>
 

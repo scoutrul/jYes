@@ -12,7 +12,12 @@ export const state = () => ({
     show: false
   },
   admin: {
-    editDoc: {}
+    editDoc: {},
+    activeCategory: 'posts',
+    categories: [
+      { ref: 'posts', name: 'Посты' },
+      { ref: 'tags', name: 'Теги' }
+    ]
   }
 })
 
@@ -39,6 +44,9 @@ export const mutations = {
 
   SET_EDIT_DOC(state, doc) {
     state.admin.editDoc = doc
+  },
+  SET_CATEGORY(state, ref) {
+    state.admin.activeCategory = ref
   }
 }
 
@@ -98,7 +106,10 @@ export const actions = {
     const docWithDate = { ...doc, timestamp }
 
     commit('LOADING_START')
-    const collection = await fireDb.collection(ref).doc(doc.id)
+    const collection = await fireDb
+      .collection(ref)
+      .doc(doc.id)
+      .update(doc)
     try {
       await collection.add(docWithDate).then(async (snapshot) => {
         dispatch('showAlert', { text: 'Added document' })

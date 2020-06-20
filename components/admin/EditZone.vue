@@ -1,21 +1,20 @@
 <template lang="pug">
   div
-    gb-heading(tag='h3') {{ doc.id }}
-    gb-input(v-model="editedDoc.title" label="Заголовок")
-    gb-textarea(v-model="editedDoc.body" label="Содержимое")
-    gb-divider(color="blue")
-    .tagList(v-if="getTags.length")
-      .tag(v-for="tag in getTags" :key="tag.id")
-        gb-checkbox(:label="tag.title" @change="selectTag(tag)" :value="tag.selected")
-        gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
-    gb-button(@click="updatePost()") Сохранить
-    gb-button(@click="deleteDoc({ id: doc.id})") Delete
+    EditTag(v-if="checkCategory('tags')" :doc="doc")
+    EditPost(v-if="checkCategory('posts')" :doc="doc")
 </template>
 
 <script>
-import TagList from '~/components/tags/TagList'
+import helpers from '~/mixins/helpers.js'
+import EditPost from '~/components/admin/EditPost'
+import EditTag from '~/components/admin/EditTag'
 export default {
-  components: { TagList },
+  // components: {
+  //   EditPost: () => import('~/components/admin/EditPost'),
+  //   EditTag: () => import('~/components/admin/EditTag')
+  // },
+  components: { EditPost, EditTag },
+  mixins: [helpers],
   props: {
     doc: {
       type: Object,
@@ -26,85 +25,6 @@ export default {
           tags: [{ title: 'some', id: 123 }],
           body: 'body'
         }
-      }
-    }
-  },
-  data: () => ({
-    editedDoc: {
-      tags: [{ title: '', id: 123 }],
-      title: '',
-      body: '',
-      selectedTags: []
-    },
-    tagsmodel: {}
-  }),
-  computed: {
-    getTags() {
-      const docTags = this.doc.tags
-      const tagList = this.$store.state.docs.tags
-      const list = tagList.map((item) => {
-        const tag = item
-        // eslint-disable-next-line no-prototype-builtins
-        if (docTags.hasOwnProperty(item.id) && docTags[item.id]) {
-          tag.selected = true
-        } else {
-          tag.selected = false
-        }
-        return tag
-      })
-
-      return list
-    }
-  },
-  watch: {
-    doc(val, old) {
-      this.editedDoc = val
-    }
-  },
-  mounted() {
-    this.editedDoc = this.doc
-  },
-  methods: {
-    async deleteTag({ id }) {
-      await this.$store.dispatch('deleteDoc', {
-        ref: 'tags',
-        id
-      })
-    },
-    selectTag(tag, event) {
-      this.editedDoc.selectedTags = [this.editedDoc.selectedTags, tag]
-    },
-    async deleteDoc({ id }) {
-      await this.$store.dispatch('deleteDoc', {
-        ref: 'posts',
-        id
-      })
-    },
-    async updatePost() {
-      const tags = Object.entries(this.editedDoc.selectedTags)
-        .filter(([k, v]) => v)
-        .map((k) => this.tags[k])
-      await this.$store.dispatch('updateDoc', {
-        ref: 'posts',
-        doc: this.postData({
-          ...this.doc,
-          title: this.editedDoc.title,
-          body: this.editedDoc.body,
-          tags
-        })
-      })
-    },
-    postData({
-      title = 'new post',
-      authorId = 'admin',
-      tags = ['other'],
-      body = 'body'
-    }) {
-      return {
-        title,
-        authorId,
-        tags,
-        body
       }
     }
   }

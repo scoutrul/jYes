@@ -15,7 +15,7 @@ body {
 }
 .container {
   width: 100%;
-  max-width: 900px;
+  max-width: 640px;
 }
 .mainClass {
   position: absolute;
