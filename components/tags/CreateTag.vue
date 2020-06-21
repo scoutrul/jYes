@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     gb-input(v-model="title" label="Новый тэг")
-    gb-button(@click="createTag()") Добавить таг
+    gb-button(@click="createTag" :disabled="$store.state.loading") Добавить таг
 </template>
 
 <script>
@@ -16,6 +16,7 @@ export default {
         ref: 'tags',
         doc: { title: this.title }
       })
+      await this.$store.commit('TOGGLE_CREATE_MODAL', false)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div(v-if="isEditable")
     gb-heading(tag='h3') {{ doc.id }}
     gb-input(v-model="title" label="Заголовок")
     gb-textarea(v-model="body" label="Содержимое")
@@ -9,15 +9,17 @@
         gb-checkbox(:label="tag.title" @change="selectTag(tag)" :value="tag.selected")
         gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
     CreateTag
-    gb-button(@click="updatePost()") Сохранить
-    gb-button(@click="deleteDoc({ id: doc.id})") Delete
+    gb-button(@click="updatePost" :disabled="$store.state.loading") Сохранить
+    gb-button(@click="deleteDoc({ id: doc.id})" :disabled="$store.state.loading") Delete
 </template>
 
 <script>
 import TagList from '~/components/tags/TagList'
 import CreateTag from '@/components/tags/CreateTag'
+import helpers from '~/mixins/helpers.js'
 export default {
   components: { TagList, CreateTag },
+  mixins: [helpers],
   props: {
     doc: {
       type: Object,
@@ -40,7 +42,7 @@ export default {
   }),
   computed: {
     getTags() {
-      const docTags = this.doc.tags
+      const docTags = this.doc.tags || []
       const tagList = this.$store.state.docs.tags
       const list = tagList.map((item) => {
         const tag = item
@@ -56,22 +58,7 @@ export default {
       return list
     }
   },
-  watch: {
-    doc(val, old) {
-      const { title, id, tags, body } = val
-      this.title = title
-      this.id = id
-      this.tags = tags
-      this.body = body
-    }
-  },
-  mounted() {
-    const { title, id, tags, body } = this.doc
-    this.title = title
-    this.id = id
-    this.tags = tags
-    this.body = body
-  },
+
   methods: {
     async deleteTag({ id }) {
       await this.$store.dispatch('deleteDoc', {
@@ -87,6 +74,7 @@ export default {
         ref: 'posts',
         id
       })
+      this.isEditable = false
     },
     async updatePost() {
       const tags = Object.entries(this.selectedTags)

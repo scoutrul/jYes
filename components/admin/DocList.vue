@@ -1,9 +1,9 @@
 <template lang="pug">
   div
-    CreateModal(:opened="newDocModal")
-      CreatePostModal(v-if="checkCategory('post')")
+    CreateModal(:opened="modalState")
+      CreatePostForm(v-if="checkCategory('posts')")
       CreateTag(v-if="checkCategory('tags')")
-    gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="newDocModal") Добавить
+    gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="modalState") Добавить
     gb-divider(color="yellow")
     template(v-if="getDocs.length")
       .doc(v-for="doc in getDocs" :key="doc.id" @click="editDoc(doc)" :class="{active : (doc.id === $store.state.admin.editDoc.id)}")
@@ -15,20 +15,17 @@
 <script>
 import dayjs from 'dayjs'
 import CreateModal from '~/components/admin/CreateModal'
-import CreatePostModal from '~/components/admin/CreatePostModal'
+import CreatePostForm from '~/components/admin/CreatePostForm'
 import CreateTag from '~/components/tags/CreateTag'
 import helpers from '~/mixins/helpers.js'
 
 export default {
   components: {
     CreateModal,
-    CreatePostModal,
+    CreatePostForm,
     CreateTag
   },
   mixins: [helpers],
-  data: () => ({
-    newDocModal: false
-  }),
   computed: {
     dateFormat() {
       return (date) => {
@@ -41,14 +38,14 @@ export default {
     }
   },
   mounted() {
-    this.$on('closeModal', this.closeCreateDoc)
+    this.closeCreateDoc()
   },
   methods: {
     openCreateDoc() {
-      this.newDocModal = true
+      this.$store.commit('TOGGLE_CREATE_MODAL', true)
     },
     closeCreateDoc() {
-      this.newDocModal = false
+      this.$store.commit('TOGGLE_CREATE_MODAL', false)
     },
     editDoc(doc) {
       this.$store.commit('SET_EDIT_DOC', doc)

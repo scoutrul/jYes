@@ -27,9 +27,6 @@ export default {
   }),
 
   methods: {
-    closeModal() {
-      this.$parent.$emit('closeModal')
-    },
     async createPost() {
       const tags = Object.entries(this.tags)
         .filter(([k, v]) => v)
@@ -42,7 +39,7 @@ export default {
           body: this.body
         })
       })
-      this.closeModal()
+      await this.$store.commit('TOGGLE_CREATE_MODAL', false)
     },
     postData({
       title = 'new post',

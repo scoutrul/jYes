@@ -1,5 +1,5 @@
 <template lang="pug">
-  .modal(:class="{active : opened}")
+  .modal(:class="{active : modalState}")
     .container
       slot
       gb-button(@click="closeModal").closeBtn x
@@ -8,18 +8,14 @@
 
 <script>
 import CreateTag from '@/components/tags/CreateTag'
+import helpers from '~/mixins/helpers.js'
 export default {
   components: { CreateTag },
-  props: {
-    opened: {
-      type: Boolean,
-      default: false
-    }
-  },
+  mixins: [helpers],
 
   methods: {
     closeModal() {
-      this.$parent.$emit('closeModal')
+      this.$store.commit('TOGGLE_CREATE_MODAL', false)
     }
   }
 }

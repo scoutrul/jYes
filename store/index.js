@@ -12,6 +12,7 @@ export const state = () => ({
     show: false
   },
   admin: {
+    isCreateModal: false,
     editDoc: {},
     activeCategory: 'posts',
     categories: [
@@ -22,6 +23,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  TOGGLE_CREATE_MODAL(state, bool) {
+    state.admin.isCreateModal = bool
+  },
   STORE_DOCS(state, { docs, ref }) {
     state.docs[ref] = docs
   },
@@ -102,16 +106,14 @@ export const actions = {
     }
   },
   async updateDoc({ dispatch, commit }, { ref, doc }) {
+    console.log(ref, doc)
     const timestamp = dayjs().format()
     const docWithDate = { ...doc, timestamp }
 
     commit('LOADING_START')
-    const collection = await fireDb
-      .collection(ref)
-      .doc(doc.id)
-      .update(doc)
+    const collection = await fireDb.collection(ref).doc(doc.id)
     try {
-      await collection.add(docWithDate).then(async (snapshot) => {
+      await collection.update(docWithDate).then(async (snapshot) => {
         dispatch('showAlert', { text: 'Added document' })
         console.log('Updated document', snapshot)
         await dispatch('fetchDocs', { ref })
