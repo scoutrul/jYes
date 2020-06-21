@@ -2,7 +2,7 @@
   div
     CreateModal(:opened="modalState")
       CreatePostForm(v-if="checkCategory('posts')")
-      CreateTag(v-if="checkCategory('tags')")
+      CreateTagForm(v-if="checkCategory('tags')")
     gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="modalState") Добавить
     gb-divider(color="yellow")
     template(v-if="getDocs.length")
@@ -16,14 +16,14 @@
 import dayjs from 'dayjs'
 import CreateModal from '~/components/admin/CreateModal'
 import CreatePostForm from '~/components/admin/CreatePostForm'
-import CreateTag from '~/components/tags/CreateTag'
+import CreateTagForm from '~/components/admin/CreateTagForm'
 import helpers from '~/mixins/helpers.js'
 
 export default {
   components: {
     CreateModal,
     CreatePostForm,
-    CreateTag
+    CreateTagForm
   },
   mixins: [helpers],
   computed: {
