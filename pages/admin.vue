@@ -2,14 +2,14 @@
   .admin
     .menu
       gb-heading(
-        tag="h6" 
-        color="white" 
-        v-for="category in $store.state.admin.categories" 
+        tag="h6"
+        color="white"
+        v-for="category in $store.state.admin.categories"
         :key="category.ref"
         @click="setCategory(category.ref)"
         :class="{active : (category.ref === $store.state.admin.activeCategory)}") {{ category.name }}
-    DocList().docList
-    EditZone(:doc="$store.state.admin.editDoc").editZone
+    DocList.docList
+    EditZone.editZone
 </template>
 
 <script>

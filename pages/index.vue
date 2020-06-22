@@ -13,6 +13,7 @@
 import TagList from '~/components/tags/TagList'
 
 export default {
+  components: { TagList },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })

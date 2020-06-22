@@ -28,14 +28,21 @@ export default {
 
   methods: {
     async createPost() {
-      const tags = Object.entries(this.tags)
-        .filter(([k, v]) => v)
-        .map((tag) => tag[0])
+      const tags = []
+      Object.entries(this.tags)
+        .filter(([key, value]) => value)
+        .forEach(([tagKey]) => {
+          if (this.$store.state.docs.tags.some((_tag) => _tag.id === tagKey)) {
+            tags.push(
+              this.$store.state.docs.tags.find((_tag) => _tag.id === tagKey)
+            )
+          }
+        })
       await this.$store.dispatch('createDoc', {
         ref: 'posts',
         doc: this.postData({
           title: this.title,
-          tags: this.tags,
+          tags,
           body: this.body
         })
       })

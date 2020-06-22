@@ -24,50 +24,58 @@ export default {
     doc: {
       type: Object,
       default: () => {
-        return {
-          title: 'Title',
-          id: 123,
-          tags: [{ title: 'some', id: 123 }],
-          body: 'body'
-        }
+        return {}
       }
     }
   },
   data: () => ({
-    tags: [{ title: '', id: 123 }],
+    tags: [],
     title: '',
-    body: '',
-    selectedTags: [],
-    tagsmodel: {}
+    body: ''
   }),
   computed: {
     getTags() {
       const docTags = this.doc.tags || []
       const tagList = this.$store.state.docs.tags
-      const list = tagList.map((item) => {
-        const tag = item
-        // eslint-disable-next-line no-prototype-builtins
-        if (docTags && docTags.hasOwnProperty(item.id) && docTags[item.id]) {
+      const tagsWithSelected = []
+      tagList.forEach((tag) => {
+        if (docTags.some((_tag) => _tag.id === tag.id)) {
           tag.selected = true
         } else {
           tag.selected = false
         }
-        return tag
+        tagsWithSelected.push(tag)
       })
-
-      return list
+      return tagsWithSelected
     }
+  },
+  mounted() {
+    this.tags = this.doc.tags
+    this.title = this.doc.title
+    this.body = this.doc.body
   },
 
   methods: {
+    selectTag(selectedTag) {
+      const tempTags = []
+      this.tags.forEach((tag) => {
+        const tempTag = tag
+        if (tag.id === selectedTag.id) {
+          if (tempTag.selected) {
+            tempTag.selected = false
+          } else {
+            tempTag.selected = true
+          }
+        }
+        tempTags.push(tempTag)
+      })
+      this.tags = tempTags
+    },
     async deleteTag({ id }) {
       await this.$store.dispatch('deleteDoc', {
         ref: 'tags',
         id
       })
-    },
-    selectTag(tag, event) {
-      this.selectedTags = [this.selectedTags, tag]
     },
     async deleteDoc({ id }) {
       await this.$store.dispatch('deleteDoc', {
@@ -77,31 +85,15 @@ export default {
       this.isEditable = false
     },
     async updatePost() {
-      const tags = Object.entries(this.selectedTags)
-        .filter(([k, v]) => v)
-        .map((k) => this.tags[k])
       await this.$store.dispatch('updateDoc', {
         ref: 'posts',
-        doc: this.postData({
+        doc: {
           ...this.doc,
           title: this.title,
           body: this.body,
-          tags
-        })
+          tags: this.tags
+        }
       })
-    },
-    postData({
-      title = 'new post',
-      authorId = 'admin',
-      tags = ['other'],
-      body = 'body'
-    }) {
-      return {
-        title,
-        authorId,
-        tags,
-        body
-      }
     }
   }
 }

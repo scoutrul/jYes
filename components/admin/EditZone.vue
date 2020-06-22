@@ -1,7 +1,7 @@
 <template lang="pug">
   div
-    EditTag(v-if="checkCategory('tags')" :doc="doc")
-    EditPost(v-if="checkCategory('posts')" :doc="doc")
+    EditTag(v-if="checkCategory('tags') && $store.state.admin.editDoc.id" :doc="$store.state.admin.editDoc")
+    EditPost(v-if="checkCategory('posts') && $store.state.admin.editDoc.id" :doc="$store.state.admin.editDoc")
 </template>
 
 <script>
@@ -11,8 +11,7 @@ export default {
     EditPost: () => import('~/components/admin/EditPost'),
     EditTag: () => import('~/components/admin/EditTag')
   },
-  mixins: [helpers],
-  props: ['doc']
+  mixins: [helpers]
 }
 </script>
 
