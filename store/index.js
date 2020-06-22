@@ -113,9 +113,8 @@ export const actions = {
     commit('LOADING_START')
     const collection = await fireDb.collection(ref).doc(doc.id)
     try {
-      await collection.update(docWithDate).then(async (snapshot) => {
+      await collection.update(docWithDate).then(async () => {
         dispatch('showAlert', { text: 'Updated document' })
-        console.log('Updated document', snapshot)
         await dispatch('fetchDocs', { ref })
       })
     } catch (err) {

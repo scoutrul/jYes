@@ -35,22 +35,30 @@ export default {
   }),
   computed: {
     getTags() {
-      const docTags = this.doc.tags || []
+      const docTags = this.tags || []
       const tagList = this.$store.state.docs.tags
       const tagsWithSelected = []
       tagList.forEach((tag) => {
+        const tempTag = { ...tag }
         if (docTags.some((_tag) => _tag.id === tag.id)) {
-          tag.selected = true
+          tempTag.selected = true
         } else {
-          tag.selected = false
+          tempTag.selected = false
         }
-        tagsWithSelected.push(tag)
+        tagsWithSelected.push(tempTag)
       })
       return tagsWithSelected
     }
   },
+  watch: {
+    doc(val) {
+      this.tags = val.tags || []
+      this.title = val.title
+      this.body = val.body
+    }
+  },
   mounted() {
-    this.tags = this.doc.tags
+    this.tags = this.doc.tags || []
     this.title = this.doc.title
     this.body = this.doc.body
   },
@@ -58,8 +66,8 @@ export default {
   methods: {
     selectTag(selectedTag) {
       const tempTags = []
-      this.tags.forEach((tag) => {
-        const tempTag = tag
+      this.getTags.forEach((tag) => {
+        const tempTag = { ...tag }
         if (tag.id === selectedTag.id) {
           if (tempTag.selected) {
             tempTag.selected = false
@@ -92,6 +100,12 @@ export default {
           title: this.title,
           body: this.body,
           tags: this.tags
+            .filter((tag) => tag.selected)
+            .map((tag) => {
+              const tempTag = { ...tag }
+              delete tempTag.selected
+              return tempTag
+            })
         }
       })
     }

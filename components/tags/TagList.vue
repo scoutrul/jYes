@@ -11,6 +11,7 @@ export default {
     removeNotActiveTags(tagId) {
       return this.$store.state.docs.tags.some((tag) => tag.id === tagId)
     }
+    // TODO отображать неактивные теги?
   }
 }
 </script>
