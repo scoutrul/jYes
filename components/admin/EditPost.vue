@@ -4,8 +4,8 @@
     gb-input(v-model="title" label="Заголовок")
     gb-textarea(v-model="body" label="Содержимое")
     gb-divider(color="blue")
-    .tagList(v-if="getTags.length")
-      .tag(v-for="tag in getTags" :key="tag.id")
+    .tagList(v-if="tags.length")
+      .tag(v-for="tag in tags" :key="tag.id")
         gb-checkbox(:label="tag.title" @change="selectTag(tag)" :value="tag.selected")
         gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
     CreateTag
@@ -24,7 +24,9 @@ export default {
     doc: {
       type: Object,
       default: () => {
-        return {}
+        return {
+          tags: [{}]
+        }
       }
     }
   },
@@ -35,45 +37,37 @@ export default {
   }),
   computed: {
     getTags() {
-      const docTags = this.tags || []
-      const tagList = this.$store.state.docs.tags
-      const tagsWithSelected = []
-      tagList.forEach((tag) => {
-        const tempTag = { ...tag }
-        if (docTags.some((_tag) => _tag.id === tag.id)) {
-          tempTag.selected = true
-        } else {
-          tempTag.selected = false
-        }
-        tagsWithSelected.push(tempTag)
-      })
-      return tagsWithSelected
+      return this.$store.state.docs.tags
     }
   },
   watch: {
     doc(val) {
-      this.tags = val.tags || []
+      console.log('watch', val)
+      this.tags = this.markSelectedTags(val.tags)
       this.title = val.title
       this.body = val.body
+    },
+    getTags(val) {
+      console.log('getTags', val)
+      this.tags = val
     }
   },
-  mounted() {
-    this.tags = this.doc.tags || []
-    this.title = this.doc.title
-    this.body = this.doc.body
-  },
-
   methods: {
+    markSelectedTags(tags = []) {
+      const docTags = tags
+      const tagList = this.$store.state.docs.tags
+      return tagList.map((tag) => {
+        const tempTag = { ...tag }
+        tempTag.selected = docTags.some((_tag) => _tag.id === tag.id)
+        return tempTag
+      })
+    },
     selectTag(selectedTag) {
       const tempTags = []
-      this.getTags.forEach((tag) => {
+      this.tags.forEach((tag) => {
         const tempTag = { ...tag }
         if (tag.id === selectedTag.id) {
-          if (tempTag.selected) {
-            tempTag.selected = false
-          } else {
-            tempTag.selected = true
-          }
+          tempTag.selected = !tempTag.selected
         }
         tempTags.push(tempTag)
       })
@@ -93,19 +87,20 @@ export default {
       this.isEditable = false
     },
     async updatePost() {
+      const cleanTags = this.tags
+        .filter((tag) => tag.selected)
+        .map((tag) => {
+          const tempTag = { ...tag }
+          delete tempTag.selected
+          return tempTag
+        })
       await this.$store.dispatch('updateDoc', {
         ref: 'posts',
         doc: {
           ...this.doc,
           title: this.title,
           body: this.body,
-          tags: this.tags
-            .filter((tag) => tag.selected)
-            .map((tag) => {
-              const tempTag = { ...tag }
-              delete tempTag.selected
-              return tempTag
-            })
+          tags: cleanTags
         }
       })
     }

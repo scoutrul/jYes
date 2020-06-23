@@ -94,9 +94,9 @@ export const actions = {
     const collection = await fireDb.collection(ref)
     try {
       await collection.add(docWithDate).then(async (snapshot) => {
+        await dispatch('fetchDocs', { ref })
         dispatch('showAlert', { text: 'Added document' })
         console.log('Added document', snapshot)
-        await dispatch('fetchDocs', { ref })
       })
     } catch (err) {
       dispatch('showAlert', { text: 'Error createDoc documents', color: 'red' })
@@ -131,7 +131,8 @@ export const actions = {
       await collection
         .doc(id)
         .delete()
-        .then(() => {
+        .then(async () => {
+          await dispatch('fetchDocs', { ref })
           dispatch('showAlert', {
             text: 'Document successfully deleted',
             color: 'yellow'
@@ -144,7 +145,6 @@ export const actions = {
       })
       console.log(err)
     } finally {
-      await dispatch('fetchDocs', { ref })
       commit('LOADING_FINISH')
     }
   }

@@ -26,7 +26,7 @@ export default {
     title: ''
   }),
   watch: {
-    doc(val, old) {
+    doc(val) {
       this.title = val.title
       this.isEditable = true
     }
