@@ -1,9 +1,9 @@
 <template>
   <ckeditor
-    @input="editorDataUp"
     :editor="editor"
     :config="editorConfig"
     :value="value"
+    @input="editorDataUp"
   ></ckeditor>
 </template>
 
