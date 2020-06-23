@@ -13,7 +13,6 @@
 export default {
   methods: {
     onAlertClose() {
-      console.log('close')
       this.$store.commit('HIDE_ALERT')
     }
   }

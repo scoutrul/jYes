@@ -12,11 +12,12 @@
     EditZone.editZone
 </template>
 
-<script>
-import DocList from '~/components/admin/DocList'
-import EditZone from '~/components/admin/EditZone'
+<script lang="ts">
+import Vue from 'vue'
+import DocList from '@/components/admin/DocList.vue'
+import EditZone from '@/components/admin/EditZone.vue'
 
-export default {
+export default Vue.extend({
   components: { DocList, EditZone },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
@@ -25,11 +26,11 @@ export default {
   data: () => ({}),
   computed: {},
   methods: {
-    setCategory(ref) {
+    setCategory(ref: String) {
       this.$store.commit('SET_CATEGORY', ref)
     }
   }
-}
+})
 </script>
 
 <style scoped>

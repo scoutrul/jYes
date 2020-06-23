@@ -9,10 +9,11 @@
         gb-divider(size="large" color="turquoise")
 </template>
 
-<script>
-import TagList from '~/components/admin/tags/TagList'
+<script lang="ts">
+import Vue from 'vue'
+import TagList from '~/components/admin/tags/TagList.vue'
 
-export default {
+export default Vue.extend({
   components: { TagList },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
@@ -21,7 +22,7 @@ export default {
   data: () => ({}),
 
   methods: {}
-}
+})
 </script>
 
 <style scoped></style>

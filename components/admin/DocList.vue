@@ -15,7 +15,7 @@
 <script>
 import dayjs from 'dayjs'
 import CreateModal from '@/components/admin/CreateModal/CreateModal'
-import CreatePostForm from '@/components/admin/CreateModal/CreatePostForm'
+import CreatePostForm from '@/components/admin/CreateModal/CreatePostForm.vue'
 import CreateTagForm from '@/components/admin/CreateModal/CreateTagForm'
 import helpers from '~/mixins/helpers.js'
 

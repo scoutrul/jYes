@@ -10,7 +10,7 @@ export default {
     }
   },
   watch: {
-    doc(val, old) {
+    doc(val) {
       const { title, id, tags, body } = val
       this.title = title
       this.id = id

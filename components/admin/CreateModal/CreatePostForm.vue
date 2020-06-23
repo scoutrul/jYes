@@ -9,10 +9,12 @@
     gb-button(@click="createPost" :disabled="$store.state.loading") add document
 
 </template>
+<script lang="ts">
+import Vue from 'vue'
+import CreateTag from '@/components/admin/tags/CreateTag.vue'
+import { TagInterface } from '@/types'
 
-<script>
-import CreateTag from '@/components/admin/tags/CreateTag'
-export default {
+export default Vue.extend({
   components: { CreateTag },
   props: {
     opened: {
@@ -28,13 +30,19 @@ export default {
 
   methods: {
     async createPost() {
-      const tags = []
+      const tags: any = []
       Object.entries(this.tags)
-        .filter(([key, value]) => value)
+        .filter(([key, value]) => key && value)
         .forEach(([tagKey]) => {
-          if (this.$store.state.docs.tags.some((_tag) => _tag.id === tagKey)) {
+          if (
+            this.$store.state.docs.tags.some(
+              (_tag: TagInterface) => _tag.id === tagKey
+            )
+          ) {
             tags.push(
-              this.$store.state.docs.tags.find((_tag) => _tag.id === tagKey)
+              this.$store.state.docs.tags.find(
+                (_tag: TagInterface) => _tag.id === tagKey
+              )
             )
           }
         })
@@ -62,38 +70,5 @@ export default {
       }
     }
   }
-}
+})
 </script>
-
-<style scoped>
-.modal {
-  position: fixed;
-  z-index: 100;
-  top: -100%;
-  left: 0;
-  min-width: 100vw;
-  height: 100%;
-  background-color: rgba(33, 43, 59, 0.74);
-  opacity: 0;
-}
-.modal.active {
-  top: 0;
-  opacity: 1;
-}
-.modal .container {
-  position: relative;
-  padding: 40px;
-  margin: 10vh auto auto;
-  background-color: #546e98;
-  opacity: 0;
-  transition: 0.2s ease-out 0.1s;
-}
-.modal.active .container {
-  opacity: 1;
-}
-.closeBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-</style>

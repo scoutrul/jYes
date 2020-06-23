@@ -4,8 +4,10 @@
     gb-button(@click="createTag" :disabled="$store.state.loading") Добавить таг
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   data: () => ({
     title: 'новый'
   }),
@@ -19,7 +21,5 @@ export default {
       await this.$store.commit('TOGGLE_CREATE_MODAL', false)
     }
   }
-}
+})
 </script>
-
-<style></style>

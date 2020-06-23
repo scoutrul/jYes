@@ -6,10 +6,12 @@
 
 </template>
 
-<script>
-import CreateTag from '@/components/admin/tags/CreateTag'
+<script lang="ts">
+import Vue from 'vue'
+import CreateTag from '@/components/admin/tags/CreateTag.vue'
 import helpers from '@/mixins/helpers.js'
-export default {
+
+export default Vue.extend({
   components: { CreateTag },
   mixins: [helpers],
 
@@ -18,7 +20,7 @@ export default {
       this.$store.commit('TOGGLE_CREATE_MODAL', false)
     }
   }
-}
+})
 </script>
 
 <style scoped>
