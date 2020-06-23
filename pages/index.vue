@@ -4,7 +4,7 @@
     .posts
       .post(v-for="post in $store.state.docs.posts")
         gb-heading(tag='h3') {{post.title}}
-        .body {{ post.body}}
+        .body(v-html="post.body")
         TagList(:tags="post.tags")
         gb-divider(size="large" color="turquoise")
 </template>

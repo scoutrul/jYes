@@ -2,7 +2,7 @@
   div(v-if="isEditable")
     gb-heading(tag='h3') {{ doc.id }}
     gb-input(v-model="title" label="Заголовок")
-    gb-textarea(v-model="body" label="Содержимое")
+    Editor(:value="body" :editorDataUp="editorHandle")
     gb-divider(color="blue")
     .tagList(v-if="tags.length")
       .tag(v-for="tag in tags" :key="tag.id")
@@ -16,9 +16,10 @@
 <script>
 import TagList from '~/components/admin/tags/TagList'
 import CreateTag from '@/components/admin/tags/CreateTag'
-import helpers from '~/mixins/helpers.js'
+import Editor from '@/components/admin/Editor'
+import helpers from '@/mixins/helpers.js'
 export default {
-  components: { TagList, CreateTag },
+  components: { TagList, CreateTag, Editor },
   mixins: [helpers],
   props: {
     doc: {
@@ -53,6 +54,10 @@ export default {
     }
   },
   methods: {
+    editorHandle(val) {
+      this.body = val
+    },
+
     markSelectedTags(tags = []) {
       const docTags = tags
       const tagList = this.$store.state.docs.tags
