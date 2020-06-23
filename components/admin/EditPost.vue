@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import TagList from '~/components/tags/TagList'
-import CreateTag from '@/components/tags/CreateTag'
+import TagList from '~/components/admin/tags/TagList'
+import CreateTag from '@/components/admin/tags/CreateTag'
 import helpers from '~/mixins/helpers.js'
 export default {
   components: { TagList, CreateTag },

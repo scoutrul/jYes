@@ -14,9 +14,9 @@
 
 <script>
 import dayjs from 'dayjs'
-import CreateModal from '~/components/admin/CreateModal'
-import CreatePostForm from '~/components/admin/CreatePostForm'
-import CreateTagForm from '~/components/admin/CreateTagForm'
+import CreateModal from '@/components/admin/CreateModal/CreateModal'
+import CreatePostForm from '@/components/admin/CreateModal/CreatePostForm'
+import CreateTagForm from '@/components/admin/CreateModal/CreateTagForm'
 import helpers from '~/mixins/helpers.js'
 
 export default {

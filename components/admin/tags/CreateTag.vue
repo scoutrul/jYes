@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    gb-input(v-model="title" label="Новый тэг")
+    gb-input(v-model="title" label="Новый тэг").input
     gb-button(@click="createTag" :disabled="$store.state.loading") Добавить таг
 </template>
 
@@ -21,4 +21,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.input {
+  display: inline-block;
+}
+</style>

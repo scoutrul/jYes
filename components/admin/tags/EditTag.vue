@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import helpers from '~/mixins/helpers.js'
+import helpers from '@/mixins/helpers.js'
 export default {
   mixins: [helpers],
   props: {

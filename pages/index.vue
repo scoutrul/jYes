@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import TagList from '~/components/tags/TagList'
+import TagList from '~/components/admin/tags/TagList'
 
 export default {
   components: { TagList },

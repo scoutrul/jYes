@@ -9,7 +9,7 @@ import helpers from '~/mixins/helpers.js'
 export default {
   components: {
     EditPost: () => import('~/components/admin/EditPost'),
-    EditTag: () => import('~/components/admin/EditTag')
+    EditTag: () => import('@/components/admin/tags/EditTag')
   },
   mixins: [helpers]
 }

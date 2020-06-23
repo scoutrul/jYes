@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import CreateTag from '@/components/tags/CreateTag'
-import helpers from '~/mixins/helpers.js'
+import CreateTag from '@/components/admin/tags/CreateTag'
+import helpers from '@/mixins/helpers.js'
 export default {
   components: { CreateTag },
   mixins: [helpers],

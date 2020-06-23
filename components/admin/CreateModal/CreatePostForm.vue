@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CreateTag from '@/components/tags/CreateTag'
+import CreateTag from '@/components/admin/tags/CreateTag'
 export default {
   components: { CreateTag },
   props: {
