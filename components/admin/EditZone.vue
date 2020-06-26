@@ -1,7 +1,7 @@
 <template lang="pug">
   div
-    EditTag(v-if="checkCategory('tags') && $store.state.admin.editDoc.id" :doc="$store.state.admin.editDoc")
-    EditPost(v-if="checkCategory('posts') && $store.state.admin.editDoc.id" :doc="$store.state.admin.editDoc")
+    EditTag(v-if="checkCategory('tags') && $store.state.admin.editDoc.id" :tag="$store.state.admin.editDoc")
+    EditPost(v-if="checkCategory('posts') && $store.state.admin.editDoc.id" :post="$store.state.admin.editDoc")
 </template>
 
 <script>

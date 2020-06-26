@@ -39,11 +39,7 @@ export default Vue.extend({
               (_tag: TagInterface) => _tag.id === tagKey
             )
           ) {
-            tags.push(
-              this.$store.state.docs.tags.find(
-                (_tag: TagInterface) => _tag.id === tagKey
-              )
-            )
+            tags.push(tagKey)
           }
         })
       await this.$store.dispatch('createDoc', {

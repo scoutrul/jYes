@@ -1,35 +1,37 @@
 <template lang="pug">
   div(v-if="isEditable")
-    gb-heading(tag='h3') {{ doc.id }}
+    gb-heading(tag='h3') {{ tag.id }}
     gb-input(v-model="title" label="Название")
     gb-divider(color="blue")
     gb-button(@click="updateTag" :disabled="$store.state.loading") Сохранить
-    gb-button(@click="deleteTag({ id: doc.id})" :disabled="$store.state.loading") Delete
+    gb-button(@click="deleteTag({ id: tag.id})" :disabled="$store.state.loading") Delete
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import helpers from '@/mixins/helpers.js'
-export default {
+import { TagInterface } from '@/types'
+
+export default Vue.extend({
   mixins: [helpers],
   props: {
-    doc: {
+    tag: {
       type: Object,
-      default: () => {
-        return {
-          title: 'Title',
-          id: 123
-        }
-      }
+      default: () => {}
     }
   },
   data: () => ({
     title: ''
   }),
   watch: {
-    doc(val) {
+    tag(val: TagInterface) {
       this.title = val.title
       this.isEditable = true
     }
+  },
+  beforeMount() {
+    this.title = this.tag.title
+    this.isEditable = true
   },
 
   methods: {
@@ -44,13 +46,13 @@ export default {
       await this.$store.dispatch('updateDoc', {
         ref: 'tags',
         doc: {
-          ...this.doc,
+          ...this.tag,
           title: this.title
         }
       })
     }
   }
-}
+})
 </script>
 
 <style scoped></style>

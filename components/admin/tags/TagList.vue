@@ -1,17 +1,28 @@
 <template lang="pug">
     .tags
-      .tag(v-for="tag in tags" :key="tag.id" v-if="removeNotActiveTags(tag.id)")
-        gb-badge(size='micro') {{ tag.title }}
+      .tag(v-for="tag in pickTags(tags)" :key="tag.id")
+        nuxt-link(:to="{ name: 'tags', params: { tagIds: [tag.id] }}")
+          gb-badge(size='micro') {{ tag.title }}
 </template>
 
 <script>
 export default {
   props: ['tags'],
-  methods: {
-    removeNotActiveTags(tagId) {
-      return this.$store.state.docs.tags.some((tag) => tag.id === tagId)
+  computed: {
+    pickTags() {
+      const state = []
+      return (tagIds) => {
+        tagIds.forEach((tagId) => {
+          const findTag = this.$store.state.docs.tags.find(
+            (tag) => tag.id === tagId
+          )
+          if (findTag) {
+            state.push(findTag)
+          }
+        })
+        return state
+      }
     }
-    // TODO отображать неактивные теги?
   }
 }
 </script>

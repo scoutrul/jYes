@@ -1,76 +1,90 @@
 <template lang="pug">
   div(v-if="isEditable")
-    gb-heading(tag='h3') {{ doc.id }}
+    gb-heading(tag='h3') {{ post.id }}
     gb-input(v-model="title" label="Заголовок")
     Editor(:value="body" :editorDataUp="editorHandle")
     gb-divider(color="blue")
-    .tagList(v-if="tags.length")
-      .tag(v-for="tag in tags" :key="tag.id")
+    .tagList
+      .tag(v-for="tag in getTags(tags)" :key="tag.id" v-if="tag.id")
         gb-checkbox(:label="tag.title" @change="selectTag(tag)" :value="tag.selected")
         gb-button(size='micro' color='red' @click="deleteTag({ id: tag.id})") x
     CreateTag
     gb-button(@click="updatePost" :disabled="$store.state.loading") Сохранить
-    gb-button(@click="deleteDoc({ id: doc.id})" :disabled="$store.state.loading") Delete
+    gb-button(@click="deleteDoc({ id: post.id})" :disabled="$store.state.loading") Delete
 </template>
 
-<script>
-import TagList from '~/components/admin/tags/TagList'
-import CreateTag from '@/components/admin/tags/CreateTag'
-import Editor from '@/components/admin/Editor'
+<script lang="ts">
+import Vue from 'vue'
+import CreateTag from '@/components/admin/tags/CreateTag.vue'
+import Editor from '@/components/admin/Editor.vue'
 import helpers from '@/mixins/helpers.js'
-export default {
-  components: { TagList, CreateTag, Editor },
+import {
+  PostInterface,
+  TagInterface,
+  TagIdsInterface,
+  TagsInterface
+} from '@/types'
+export default Vue.extend({
+  components: { CreateTag, Editor },
   mixins: [helpers],
   props: {
-    doc: {
+    post: {
       type: Object,
-      default: () => {
-        return {
-          tags: [{}]
-        }
-      }
+      default: () => {}
     }
   },
   data: () => ({
     tags: [],
     title: '',
-    body: ''
+    body: '',
+    isEditable: false
   }),
-  computed: {
-    getTags() {
-      return this.$store.state.docs.tags
-    }
+  computed: {},
+  beforeMount() {
+    this.tags = this.markSelectedTags(this.post.tags)
+    this.title = this.post.title
+    this.body = this.post.body
+    this.isEditable = true
   },
   watch: {
-    doc(val) {
-      console.log('watch', val)
+    post(val: PostInterface) {
       this.tags = this.markSelectedTags(val.tags)
       this.title = val.title
       this.body = val.body
-    },
-    getTags(val) {
-      console.log('getTags', val)
-      this.tags = val
+      this.isEditable = true
     }
   },
   methods: {
-    editorHandle(val) {
-      this.body = val
-    },
+    getTags(tags: TagsInterface) {
+      return tags.map((tag: string) => {
+        const tempTag = this.$store.state.docs.tags.find(
+          (_tag: TagInterface) => _tag.id === tag.id
+        )
 
-    markSelectedTags(tags = []) {
-      const docTags = tags
-      const tagList = this.$store.state.docs.tags
-      return tagList.map((tag) => {
-        const tempTag = { ...tag }
-        tempTag.selected = docTags.some((_tag) => _tag.id === tag.id)
         return tempTag
       })
     },
-    selectTag(selectedTag) {
-      const tempTags = []
-      this.tags.forEach((tag) => {
-        const tempTag = { ...tag }
+    editorHandle(val: string) {
+      this.body = val
+    },
+
+    markSelectedTags(tags: TagIdsInterface) {
+      const docTags = tags
+      const tagList = this.$store.state.docs.tags
+      return tagList.map((tag: TagInterface) => {
+        const tempTag = this.$store.state.docs.tags.find(
+          (_tag: TagInterface) => _tag.id === tag.id
+        )
+        tempTag.selected = docTags.some((tagId: string) => tagId === tag.id)
+        return tempTag
+      })
+    },
+    selectTag(selectedTag: TagInterface) {
+      const tempTags: any = []
+      this.$store.state.docs.tags.forEach((tag: TagInterface) => {
+        const tempTag = this.$store.state.docs.tags.find(
+          (_tag: TagInterface) => _tag.id === tag.id
+        )
         if (tag.id === selectedTag.id) {
           tempTag.selected = !tempTag.selected
         }
@@ -92,17 +106,13 @@ export default {
       this.isEditable = false
     },
     async updatePost() {
-      const cleanTags = this.tags
-        .filter((tag) => tag.selected)
-        .map((tag) => {
-          const tempTag = { ...tag }
-          delete tempTag.selected
-          return tempTag
-        })
+      const cleanTags: TagIdsInterface = this.tags
+        .filter((tag: TagInterface) => tag.selected)
+        .map((tag: TagInterface) => tag.id)
       await this.$store.dispatch('updateDoc', {
         ref: 'posts',
         doc: {
-          ...this.doc,
+          ...this.post,
           title: this.title,
           body: this.body,
           tags: cleanTags
@@ -110,7 +120,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style scoped></style>

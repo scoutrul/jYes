@@ -26,8 +26,8 @@ export default Vue.extend({
 <style scoped>
 .modal {
   position: fixed;
-  z-index: 100;
-  top: -100%;
+  z-index: -1;
+  top: -130%;
   left: 0;
   min-width: 100vw;
   height: 100%;
@@ -35,6 +35,7 @@ export default Vue.extend({
   opacity: 0;
 }
 .modal.active {
+  z-index: 1000;
   top: 0;
   opacity: 1;
 }

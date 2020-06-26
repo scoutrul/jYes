@@ -64,6 +64,35 @@ export const actions = {
       commit('HIDE_ALERT')
     }, 3000)
   },
+  async fetchPostsWhereTags({ commit, dispatch }, { tags }) {
+    if (!tags.length) return
+
+    commit('LOADING_START')
+    const collection = await fireDb.collection('posts')
+    const docs = []
+    console.log(tags)
+    try {
+      await collection
+        .where('tags', 'in', [tags])
+        .get()
+        .then((snapshot) => {
+          console.log(snapshot)
+
+          snapshot.forEach((doc) => {
+            docs.push({ ...doc.data(), id: doc.id })
+          })
+          commit('STORE_DOCS', { ref: 'posts', docs })
+        })
+    } catch (err) {
+      dispatch('showAlert', {
+        text: 'Error fetchPostsWhereTags documents',
+        color: 'red'
+      })
+      console.log(err)
+    } finally {
+      commit('LOADING_FINISH')
+    }
+  },
   async fetchDocs({ commit, dispatch }, { ref }) {
     commit('LOADING_START')
     const collection = await fireDb.collection(ref)
