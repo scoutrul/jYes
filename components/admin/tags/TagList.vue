@@ -8,20 +8,19 @@
 <script>
 export default {
   props: ['tags'],
-  computed: {
-    pickTags() {
+  methods: {
+    pickTags(tagIds) {
       const state = []
-      return (tagIds) => {
-        tagIds.forEach((tagId) => {
-          const findTag = this.$store.state.docs.tags.find(
-            (tag) => tag.id === tagId
-          )
-          if (findTag) {
-            state.push(findTag)
-          }
-        })
-        return state
-      }
+
+      tagIds.forEach((tagId) => {
+        const findTag = this.$store.state.docs.tags.find(
+          (tag) => tag.id === tagId
+        )
+        if (findTag.id) {
+          state.push(findTag)
+        }
+      })
+      return state
     }
   }
 }

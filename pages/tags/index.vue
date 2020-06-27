@@ -17,7 +17,8 @@ export default Vue.extend({
   components: { TagList },
   async fetch() {
     const tags = this.$route.params.tagIds
-    await this.$store.dispatch('fetchPostsWhereTags', { tags })
+    if (!tags) return
+    await this.$store.dispatch('fetchPostsWhereTagIds', { tags })
   },
   data: () => ({}),
 

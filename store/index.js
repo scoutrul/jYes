@@ -64,7 +64,7 @@ export const actions = {
       commit('HIDE_ALERT')
     }, 3000)
   },
-  async fetchPostsWhereTags({ commit, dispatch }, { tags }) {
+  async fetchPostsWhereTagIds({ commit, dispatch }, { tags }) {
     if (!tags.length) return
 
     commit('LOADING_START')
