@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    CreateModal(:opened="modalState")
+    CreateModal
       CreatePostForm(v-if="checkCategory('posts')")
       CreateTagForm(v-if="checkCategory('tags')")
     gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="modalState") Добавить

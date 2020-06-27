@@ -30,7 +30,7 @@ export default {
   plugins: [
     '~plugins/vuedarkmode.js',
     '~/plugins/firebase.js',
-    { src: '~/plugins/ckeditor5.js', mode: 'client' }
+    { src: '~/plugins/ckeditor5.js', mode: 'client', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

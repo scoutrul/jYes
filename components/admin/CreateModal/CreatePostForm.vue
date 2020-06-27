@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     gb-input(v-model="title" label="Заголовок")
-    gb-textarea(v-model="body" label="Содержимое")
+    Editor(:value="body" :editorDataUp="editorHandle")
     gb-divider(color="blue")
     gb-checkbox(v-for="tag in $store.state.docs.tags" v-model="tags[tag.id]" :key="tag.id" :name="tag.id" :label="tag.title")
     gb-divider(color="green")
@@ -13,22 +13,20 @@
 import Vue from 'vue'
 import CreateTag from '@/components/admin/tags/CreateTag.vue'
 import { TagInterface } from '@/types'
+import Editor from '@/components/admin/Editor.vue'
 
 export default Vue.extend({
-  components: { CreateTag },
-  props: {
-    opened: {
-      type: Boolean,
-      default: false
-    }
-  },
+  components: { CreateTag, Editor },
   data: () => ({
     title: 'new post',
-    body: 'hello world!',
+    body: null,
     tags: {}
   }),
 
   methods: {
+    editorHandle(val: string) {
+      this.body = val
+    },
     async createPost() {
       const tags: any = []
       Object.entries(this.tags)
@@ -44,26 +42,13 @@ export default Vue.extend({
         })
       await this.$store.dispatch('createDoc', {
         ref: 'posts',
-        doc: this.postData({
+        doc: {
           title: this.title,
           tags,
           body: this.body
-        })
+        }
       })
       await this.$store.commit('TOGGLE_CREATE_MODAL', false)
-    },
-    postData({
-      title = 'new post',
-      authorId = 'admin',
-      tags = ['other'],
-      body = 'body'
-    }) {
-      return {
-        title,
-        authorId,
-        tags,
-        body
-      }
     }
   }
 })
