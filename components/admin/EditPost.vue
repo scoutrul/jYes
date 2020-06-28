@@ -40,12 +40,6 @@ export default Vue.extend({
     isEditable: false
   }),
   computed: {},
-  beforeMount() {
-    this.tags = this.markSelectedTags(this.post.tags)
-    this.title = this.post.title
-    this.body = this.post.body
-    this.isEditable = true
-  },
   watch: {
     post(val: PostInterface) {
       this.tags = this.markSelectedTags(val.tags)
@@ -53,6 +47,12 @@ export default Vue.extend({
       this.body = val.body
       this.isEditable = true
     }
+  },
+  beforeMount() {
+    this.tags = this.markSelectedTags(this.post.tags)
+    this.title = this.post.title
+    this.body = this.post.body
+    this.isEditable = true
   },
   methods: {
     getTags(tags: TagsInterface) {
@@ -68,7 +68,7 @@ export default Vue.extend({
       this.body = val
     },
 
-    markSelectedTags(tags: TagIdsInterface) {
+    markSelectedTags(tags: TagIdsInterface = []) {
       const docTags = tags
       const tagList = this.$store.state.docs.tags
       return tagList.map((tag: TagInterface) => {
@@ -99,11 +99,14 @@ export default Vue.extend({
       })
     },
     async deleteDoc({ id }) {
-      await this.$store.dispatch('deleteDoc', {
-        ref: 'posts',
-        id
-      })
-      this.isEditable = false
+      await this.$store
+        .dispatch('deleteDoc', {
+          ref: 'posts',
+          id
+        })
+        .then(() => {
+          this.isEditable = !this.$store.state.admin.confirm.confirmed
+        })
     },
     async updatePost() {
       const cleanTags: TagIdsInterface = this.tags

@@ -2,7 +2,7 @@
   <ckeditor
     :editor="editor"
     :config="editorConfig"
-    :value="value"
+    :value="value || ''"
     :disabled="$store.state.loading"
     @input="editorDataUp"
   ></ckeditor>

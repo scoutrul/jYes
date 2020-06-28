@@ -19,7 +19,7 @@ export default Vue.extend({
   components: { CreateTag, Editor },
   data: () => ({
     title: 'new post',
-    body: null,
+    body: '',
     tags: {}
   }),
 
@@ -48,7 +48,7 @@ export default Vue.extend({
           body: this.body
         }
       })
-      await this.$store.commit('TOGGLE_CREATE_MODAL', false)
+      await this.$store.commit('TOGGLE_MODAL', 'isCreateModal')
     }
   }
 })

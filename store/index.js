@@ -12,7 +12,11 @@ export const state = () => ({
     show: false
   },
   admin: {
+    confirm: {
+      confirmed: false
+    },
     isCreateModal: false,
+    isDeleteModal: false,
     editDoc: {},
     activeCategory: 'posts',
     categories: [
@@ -23,8 +27,15 @@ export const state = () => ({
 })
 
 export const mutations = {
-  TOGGLE_CREATE_MODAL(state, bool) {
-    state.admin.isCreateModal = bool
+  DELETE_FINISH(state, bool) {
+    state.admin.confirm.confirmed = bool
+  },
+  STORE_CONFIRM_DOC(state, doc) {
+    state.admin.confirm = { ...state.admin.confirm, doc }
+  },
+  TOGGLE_MODAL(state, modalProp) {
+    const prop = state.admin[modalProp]
+    state.admin[modalProp] = !prop
   },
   STORE_DOCS(state, { docs, ref }) {
     state.docs[ref] = docs
@@ -153,28 +164,45 @@ export const actions = {
       commit('LOADING_FINISH')
     }
   },
-  async deleteDoc({ dispatch, commit }, { ref, id }) {
-    commit('LOADING_START')
-    const collection = await fireDb.collection(ref)
-    try {
-      await collection
-        .doc(id)
-        .delete()
-        .then(async () => {
-          await dispatch('fetchDocs', { ref })
-          dispatch('showAlert', {
-            text: 'Document successfully deleted',
-            color: 'yellow'
+  confirmModal({ state }, name) {
+    return new Promise((resolve) => {
+      resolve(state.admin[name])
+    })
+  },
+  async deleteDoc({ dispatch, commit }, { ref, id, confirmed = false }) {
+    console.log(ref, id, confirmed)
+    const name = 'isDeleteModal'
+    commit('TOGGLE_MODAL', name)
+    commit('STORE_CONFIRM_DOC', { ref, id, name })
+    if (!confirmed) {
+      console.log('false')
+      commit('DELETE_FINISH', confirmed)
+    } else {
+      console.log('true')
+      commit('LOADING_START')
+
+      const collection = await fireDb.collection(ref)
+      try {
+        await collection
+          .doc(id)
+          .delete()
+          .then(async () => {
+            await dispatch('fetchDocs', { ref })
+            dispatch('showAlert', {
+              text: 'Document successfully deleted',
+              color: 'yellow'
+            })
+            commit('DELETE_FINISH', confirmed)
           })
+      } catch (err) {
+        dispatch('showAlert', {
+          text: 'Error deleteDoc documents',
+          color: 'red'
         })
-    } catch (err) {
-      dispatch('showAlert', {
-        text: 'Error deleteDoc documents',
-        color: 'red'
-      })
-      console.log(err)
-    } finally {
-      commit('LOADING_FINISH')
+        console.log(err)
+      } finally {
+        commit('LOADING_FINISH')
+      }
     }
   }
 }

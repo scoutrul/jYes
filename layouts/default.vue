@@ -1,13 +1,28 @@
 <template lang="pug">
   .mainClass
     Alert
+    Modal(:name="'isCreateModal'")
+      CreatePostForm(v-if="checkCategory('posts')")
+      CreateTagForm(v-if="checkCategory('tags')")
+    Modal(:name="'isDeleteModal'")
+      ConfirmForm
     nuxt
 </template>
 
 <script>
 import Alert from '~/components/Alert'
+import Modal from '@/components/admin/Modal/Modal'
+import helpers from '~/mixins/helpers.js'
 export default {
-  components: { Alert }
+  components: {
+    Modal,
+    Alert,
+    CreatePostForm: () =>
+      import('@/components/admin/CreateModal/CreatePostForm.vue'),
+    CreateTagForm: () => import('@/components/admin/CreateModal/CreateTagForm'),
+    ConfirmForm: () => import('@/components/admin/Modal/ConfirmForm')
+  },
+  mixins: [helpers]
 }
 </script>
 

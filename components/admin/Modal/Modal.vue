@@ -1,5 +1,5 @@
 <template lang="pug">
-  .modal(:class="{active : modalState}")
+  .modal(:class="{active : modalState(name)}")
     .container
       slot
       gb-button(@click="closeModal").closeBtn x
@@ -14,10 +14,11 @@ import helpers from '@/mixins/helpers.js'
 export default Vue.extend({
   components: { CreateTag },
   mixins: [helpers],
+  props: ['name'],
 
   methods: {
     closeModal() {
-      this.$store.commit('TOGGLE_CREATE_MODAL', false)
+      this.$store.commit('TOGGLE_MODAL', this.name)
     }
   }
 })

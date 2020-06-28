@@ -1,9 +1,6 @@
 <template lang="pug">
   div
-    CreateModal
-      CreatePostForm(v-if="checkCategory('posts')")
-      CreateTagForm(v-if="checkCategory('tags')")
-    gb-button(size='micro' color='green' :full-width="true" @click="openCreateDoc" :disabled="modalState") Добавить
+    gb-button(size='micro' color='green' :full-width="true" @click="ToggleCreateDoc" :disabled="modalState('isCreateModal')") Добавить
     gb-divider(color="yellow")
     template(v-if="getDocs.length")
       .doc(v-for="doc in getDocs" :key="doc.id" @click="editDoc(doc)" :class="{active : (doc.id === $store.state.admin.editDoc.id)}")
@@ -14,17 +11,9 @@
 
 <script>
 import dayjs from 'dayjs'
-import CreateModal from '@/components/admin/CreateModal/CreateModal'
-import CreatePostForm from '@/components/admin/CreateModal/CreatePostForm.vue'
-import CreateTagForm from '@/components/admin/CreateModal/CreateTagForm'
 import helpers from '~/mixins/helpers.js'
 
 export default {
-  components: {
-    CreateModal,
-    CreatePostForm,
-    CreateTagForm
-  },
   mixins: [helpers],
   computed: {
     dateFormat() {
@@ -38,14 +27,11 @@ export default {
     }
   },
   mounted() {
-    this.closeCreateDoc()
+    // this.ToggleCreateDoc()
   },
   methods: {
-    openCreateDoc() {
-      this.$store.commit('TOGGLE_CREATE_MODAL', true)
-    },
-    closeCreateDoc() {
-      this.$store.commit('TOGGLE_CREATE_MODAL', false)
+    ToggleCreateDoc() {
+      this.$store.commit('TOGGLE_MODAL', 'isCreateModal')
     },
     editDoc(doc) {
       this.$store.commit('SET_EDIT_DOC', doc)

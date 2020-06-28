@@ -2,13 +2,12 @@ export default {
   methods: {
     checkCategory(ref) {
       return ref === this.$store.state.admin.activeCategory
+    },
+    modalState(modalProp) {
+      return this.$store.state.admin[modalProp]
     }
   },
-  computed: {
-    modalState() {
-      return this.$store.state.admin.isCreateModal
-    }
-  },
+  computed: {},
   // watch: {
   //   doc(val) {
   //     const { title, id, tags, body } = val

@@ -18,7 +18,7 @@ export default Vue.extend({
         ref: 'tags',
         doc: { title: this.title }
       })
-      await this.$store.commit('TOGGLE_CREATE_MODAL', false)
+      await this.$store.commit('TOGGLE_MODAL', 'isCreateModal')
     }
   }
 })
