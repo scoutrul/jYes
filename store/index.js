@@ -12,9 +12,7 @@ export const state = () => ({
     show: false
   },
   admin: {
-    confirm: {
-      confirmed: false
-    },
+    confirm: {},
     isCreateModal: false,
     isDeleteModal: false,
     editDoc: {},
@@ -27,9 +25,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-  DELETE_FINISH(state, bool) {
-    state.admin.confirm.confirmed = bool
-  },
   STORE_CONFIRM_DOC(state, doc) {
     state.admin.confirm = { ...state.admin.confirm, ...doc }
   },
@@ -171,12 +166,11 @@ export const actions = {
   },
   async deleteDoc({ dispatch, commit }, { ref, id, confirmed = false }) {
     console.log(ref, id, confirmed)
-    const name = 'isDeleteModal'
     if (!confirmed) {
+      const name = 'isDeleteModal'
       commit('STORE_CONFIRM_DOC', { ref, id, name })
       console.log('false')
       commit('TOGGLE_MODAL', name)
-      commit('DELETE_FINISH', confirmed)
     } else {
       console.log('true')
       commit('LOADING_START')
@@ -192,7 +186,7 @@ export const actions = {
               text: 'Document successfully deleted',
               color: 'yellow'
             })
-            commit('DELETE_FINISH', false)
+            commit('SET_EDIT_DOC', {})
           })
       } catch (err) {
         dispatch('showAlert', {

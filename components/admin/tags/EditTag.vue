@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(v-if="isEditable")
+  div(v-if="tag.id")
     gb-heading(tag='h3') {{ tag.id }}
     gb-input(v-model="title" label="Название")
     gb-divider(color="blue")
@@ -26,12 +26,10 @@ export default Vue.extend({
   watch: {
     tag(val: TagInterface) {
       this.title = val.title
-      this.isEditable = true
     }
   },
   beforeMount() {
     this.title = this.tag.title
-    this.isEditable = true
   },
 
   methods: {
@@ -40,7 +38,6 @@ export default Vue.extend({
         ref: 'tags',
         id
       })
-      this.isEditable = false
     },
     async updateTag() {
       await this.$store.dispatch('updateDoc', {

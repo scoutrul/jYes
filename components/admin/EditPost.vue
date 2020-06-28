@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(v-if="isEditable")
+  div(v-if="post.id")
     gb-heading(tag='h3') {{ post.id }}
     gb-input(v-model="title" label="Заголовок")
     Editor(:value="body" :editorDataUp="editorHandle")
@@ -36,24 +36,20 @@ export default Vue.extend({
   data: () => ({
     tags: [],
     title: '',
-    body: '',
-    isEditable: false
+    body: ''
   }),
   computed: {},
   watch: {
     post(val: PostInterface) {
-      console.log(val)
       this.tags = this.markSelectedTags(val.tags)
       this.title = val.title
       this.body = val.body
-      this.isEditable = true
     }
   },
   beforeMount() {
     this.tags = this.markSelectedTags(this.post.tags)
     this.title = this.post.title
     this.body = this.post.body
-    this.isEditable = true
   },
   methods: {
     getTags(tags: TagsInterface) {
@@ -99,14 +95,10 @@ export default Vue.extend({
       })
     },
     async deleteDoc({ id }) {
-      await this.$store
-        .dispatch('deleteDoc', {
-          ref: 'posts',
-          id
-        })
-        .then(() => {
-          this.isEditable = this.$store.state.admin.confirm.confirmed
-        })
+      await this.$store.dispatch('deleteDoc', {
+        ref: 'posts',
+        id
+      })
     },
     async updatePost() {
       const cleanTags: TagIdsInterface = this.tags

@@ -5,27 +5,27 @@ Vue.use(VueDarkMode, {
   components: [
     // Base components
     'alert',
-    'avatar',
+    // 'avatar',
     'badge',
     'button',
     'divider',
     'heading',
     'icon',
-    'progress-bar',
-    'spinner',
+    // 'progress-bar',
+    // 'spinner',
 
     // Field components
     'checkbox',
-    'file',
-    'image-uploader',
+    // 'file',
+    // 'image-uploader',
     'input',
-    'input-numeric',
-    'label',
-    'message',
-    'radios',
-    'select',
-    'tabs',
-    'textarea',
-    'toggle'
+    // 'input-numeric',
+    'label'
+    // 'message',
+    // 'radios',
+    // 'select',
+    // 'tabs',
+    // 'textarea',
+    // 'toggle'
   ]
 })
