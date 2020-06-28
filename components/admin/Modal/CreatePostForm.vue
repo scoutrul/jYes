@@ -12,7 +12,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import CreateTag from '@/components/admin/tags/CreateTag.vue'
-import { TagInterface } from '@/types'
+import { TagInterface } from '~/types'
 import Editor from '@/components/admin/Editor.vue'
 
 export default Vue.extend({

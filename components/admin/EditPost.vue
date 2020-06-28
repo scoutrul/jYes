@@ -42,6 +42,7 @@ export default Vue.extend({
   computed: {},
   watch: {
     post(val: PostInterface) {
+      console.log(val)
       this.tags = this.markSelectedTags(val.tags)
       this.title = val.title
       this.body = val.body
@@ -60,7 +61,6 @@ export default Vue.extend({
         const tempTag = this.$store.state.docs.tags.find(
           (_tag: TagInterface) => _tag.id === tag.id
         )
-
         return tempTag
       })
     },
@@ -105,7 +105,7 @@ export default Vue.extend({
           id
         })
         .then(() => {
-          this.isEditable = !this.$store.state.admin.confirm.confirmed
+          this.isEditable = this.$store.state.admin.confirm.confirmed
         })
     },
     async updatePost() {

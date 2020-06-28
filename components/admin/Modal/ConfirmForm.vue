@@ -14,11 +14,15 @@ export default Vue.extend({
       this.$store.commit('TOGGLE_MODAL', this.$store.state.admin.confirm.name)
     },
     confirm() {
-      this.$store.dispatch('deleteDoc', {
-        confirmed: true,
-        ref: this.$store.state.admin.confirm.ref,
-        id: this.$store.state.admin.confirm.id
-      })
+      this.$store
+        .dispatch('deleteDoc', {
+          confirmed: true,
+          ref: this.$store.state.admin.confirm.ref,
+          id: this.$store.state.admin.confirm.id
+        })
+        .then(() => {
+          this.closeModal()
+        })
     }
   }
 })

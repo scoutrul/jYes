@@ -17,9 +17,8 @@ export default {
   components: {
     Modal,
     Alert,
-    CreatePostForm: () =>
-      import('@/components/admin/CreateModal/CreatePostForm.vue'),
-    CreateTagForm: () => import('@/components/admin/CreateModal/CreateTagForm'),
+    CreatePostForm: () => import('@/components/admin/Modal/CreatePostForm.vue'),
+    CreateTagForm: () => import('@/components/admin/Modal/CreateTagForm'),
     ConfirmForm: () => import('@/components/admin/Modal/ConfirmForm')
   },
   mixins: [helpers]
