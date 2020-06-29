@@ -19,6 +19,7 @@ import EditZone from '@/components/admin/EditZone.vue'
 
 export default Vue.extend({
   components: { DocList, EditZone },
+  layout: 'admin',
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
