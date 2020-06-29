@@ -1,7 +1,8 @@
+import { ActionTree, MutationTree } from 'vuex'
 import dayjs from 'dayjs'
 import { fireDb } from '~/plugins/firebase.js'
 
-export const state = () => ({
+export const state: any = () => ({
   docs: {
     posts: [],
     tags: []
@@ -23,14 +24,15 @@ export const state = () => ({
     ]
   }
 })
+// eslint-disable-next-line no-undef
+export type RootState = ReturnType<typeof state>
 
-export const mutations = {
+export const mutations: MutationTree<RootState> = {
   STORE_CONFIRM_DOC(state, doc) {
     state.admin.confirm = { ...state.admin.confirm, ...doc }
   },
   TOGGLE_MODAL(state, modalProp) {
-    const prop = state.admin[modalProp]
-    state.admin[modalProp] = !prop
+    state.admin[modalProp] = !state.admin[modalProp]
   },
   STORE_DOCS(state, { docs, ref }) {
     state.docs[ref] = docs
@@ -60,7 +62,7 @@ export const mutations = {
   }
 }
 
-export const actions = {
+export const actions: ActionTree<RootState, RootState> = {
   async showAlert({ commit }, { text, color }) {
     await commit('SHOW_ALERT', {
       text,
@@ -75,7 +77,7 @@ export const actions = {
 
     commit('LOADING_START')
     const collection = await fireDb.collection('posts')
-    const docs = []
+    const docs: any = []
     console.log(tags)
     try {
       await collection
@@ -104,7 +106,7 @@ export const actions = {
     const collection = await fireDb.collection(ref)
     try {
       await collection.get().then((snapshot) => {
-        const docs = []
+        const docs: any = []
         snapshot.forEach((doc) => {
           console.log(ref, doc.id, '=>', doc.data())
           docs.push({ ...doc.data(), id: doc.id })
@@ -159,11 +161,7 @@ export const actions = {
       commit('LOADING_FINISH')
     }
   },
-  confirmModal({ state }, name) {
-    return new Promise((resolve) => {
-      resolve(state.admin[name])
-    })
-  },
+
   async deleteDoc({ dispatch, commit }, { ref, id, confirmed = false }) {
     console.log(ref, id, confirmed)
     if (!confirmed) {
