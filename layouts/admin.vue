@@ -26,6 +26,9 @@ export default {
 </script>
 
 <style>
+body {
+  background: #222c3c;
+}
 .adminMain {
   position: absolute;
   top: 0;
@@ -33,7 +36,7 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
-  min-height: 200vh;
+  min-height: 120vh;
   justify-content: center;
   padding: 10px 0;
   background: #222c3c;

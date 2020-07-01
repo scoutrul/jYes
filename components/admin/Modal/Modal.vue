@@ -14,7 +14,15 @@ import helpers from '@/mixins/helpers.js'
 export default Vue.extend({
   components: { CreateTag },
   mixins: [helpers],
-  props: ['name'],
+  props: {
+    name: {
+      type: String,
+      validator(x) {
+        return ['isCreateModal', 'isDeleteModal', ''].includes(x)
+      },
+      default: ''
+    }
+  },
 
   methods: {
     closeModal() {
@@ -26,7 +34,7 @@ export default Vue.extend({
 
 <style scoped>
 .modal {
-  position: fixed;
+  position: absolute;
   z-index: -1;
   top: -130%;
   left: 0;
