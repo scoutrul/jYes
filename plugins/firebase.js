@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
 if (!firebase.apps.length) {
   const config = {
     apiKey: 'AIzaSyBEEtrcWAchxKweASIzc4UuUe05-Yy-q7M',
@@ -13,7 +14,8 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
 const fireDb = firebase.firestore()
-export { fireDb }
+const fireAuth = firebase.auth()
+export { fireDb, fireAuth }
 
 // https://medium.com/@pascalluther/nuxt-js-v2-firestore-ssr-938d8fb7d2b0
 // https://firebase.google.com/docs/firestore/query-data/get-data#node.js_1

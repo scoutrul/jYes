@@ -1,5 +1,5 @@
 <template lang="pug">
-    .tags
+    .tags(v-if="pickTags(tags).length")
       .tag(v-for="tag in pickTags(tags)" :key="tag.id")
         nuxt-link(:to="{ name: 'tags', params: { tagIds: [tag.id] }}")
           gb-badge(size='micro') {{ tag.title }}
@@ -9,14 +9,14 @@
 export default {
   props: ['tags'],
   methods: {
-    pickTags(tagIds) {
+    pickTags(tagIds = []) {
       const state = []
 
       tagIds.forEach((tagId) => {
         const findTag = this.$store.state.docs.tags.find(
           (tag) => tag.id === tagId
         )
-        if (findTag.id) {
+        if (findTag && findTag.id) {
           state.push(findTag)
         }
       })

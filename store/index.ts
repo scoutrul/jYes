@@ -1,6 +1,6 @@
 import { ActionTree, MutationTree } from 'vuex'
 import dayjs from 'dayjs'
-import { fireDb } from '~/plugins/firebase.js'
+import { fireDb, fireAuth } from '~/plugins/firebase.js'
 
 export const state: any = () => ({
   docs: {
@@ -63,11 +63,40 @@ export const mutations: MutationTree<RootState> = {
 }
 
 export const actions: ActionTree<RootState, RootState> = {
-  async showAlert({ commit }, { text, color }) {
+  async LogIn({ commit, dispatch }) {
+    commit('LOADING_START')
+    try {
+      await fireAuth.signInWithEmailAndPassword(
+        'test@test.tt',
+        'testtest'
+      )
+      await fireAuth.currentUser
+        .getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          dispatch('showAlert', {
+            text: idTokenResult,
+            color: 'yellow'
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } catch (reason) {
+      dispatch('showAlert', {
+        text: reason,
+        color: 'red'
+      })
+    } finally {
+      commit('LOADING_FINISH')
+    }
+  },
+  async showAlert({ commit }, { message, color = 'green' }) {
     await commit('SHOW_ALERT', {
-      text,
+      message,
       color
     })
+    console.log('alert: ', message)
     await setTimeout(() => {
       commit('HIDE_ALERT')
     }, 3000)
@@ -196,5 +225,8 @@ export const actions: ActionTree<RootState, RootState> = {
         commit('LOADING_FINISH')
       }
     }
+  },
+  nuxtServerInit({ dispatch }) {
+    dispatch('LogIn')
   }
 }

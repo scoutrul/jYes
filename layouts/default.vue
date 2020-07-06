@@ -1,15 +1,18 @@
 <template lang="pug">
   .mainClass
     Alert
+    LogIn
     nuxt
 </template>
 
 <script>
-import Alert from '~/components/Alert'
+import Alert from '~/components/pages/Alert'
+import LogIn from '~/components/pages/LogIn'
 
 export default {
   components: {
-    Alert
+    Alert,
+    LogIn
   }
 }
 </script>
@@ -27,10 +30,13 @@ body {
   top: 0;
   left: 0;
   display: flex;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   min-height: 200vh;
+  flex-direction: column;
   justify-content: center;
+  justify-content: flex-start;
   padding: 10px 0;
   background: #a6cbe0;
 }

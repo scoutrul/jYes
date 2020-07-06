@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Alert from '~/components/Alert'
+import Alert from '~/components/pages/Alert'
 import Modal from '@/components/admin/Modal/Modal'
 import helpers from '~/mixins/helpers.js'
 export default {
