@@ -2,11 +2,11 @@
   client-only
     gb-alert(
       :class="$store.state.alert.show ? 'active' : 'notactive'"
-      :text="$store.state.alert.text"
+      :text="$store.state.alert.message"
       :color='$store.state.alert.color'
       :closable="true"
       @close="onAlertClose"
-      ).alert {{ $store.state.alert.text }}
+      ).alert {{ $store.state.alert.message }}
 </template>
 
 <script>

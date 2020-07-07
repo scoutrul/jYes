@@ -9,7 +9,7 @@ export const state: any = () => ({
   },
   loading: false,
   alert: {
-    text: '',
+    message: '',
     show: false
   },
   admin: {
@@ -44,9 +44,9 @@ export const mutations: MutationTree<RootState> = {
     state.loading = false
   },
 
-  SHOW_ALERT(store, { text, color = 'green' }) {
+  SHOW_ALERT(store, { message, color = 'green' }) {
     store.alert.show = true
-    store.alert.text = text
+    store.alert.message = message
     store.alert.color = color
   },
 
@@ -66,16 +66,13 @@ export const actions: ActionTree<RootState, RootState> = {
   async LogIn({ commit, dispatch }) {
     commit('LOADING_START')
     try {
-      await fireAuth.signInWithEmailAndPassword(
-        'test@test.tt',
-        'testtest'
-      )
+      await fireAuth.signInWithEmailAndPassword('test@test.tt', 'testtest')
       await fireAuth.currentUser
         .getIdTokenResult()
         .then((idTokenResult) => {
           // Confirm the user is an Admin.
           dispatch('showAlert', {
-            text: idTokenResult,
+            message: idTokenResult,
             color: 'yellow'
           })
         })
@@ -84,7 +81,7 @@ export const actions: ActionTree<RootState, RootState> = {
         })
     } catch (reason) {
       dispatch('showAlert', {
-        text: reason,
+        message: reason,
         color: 'red'
       })
     } finally {
@@ -122,7 +119,7 @@ export const actions: ActionTree<RootState, RootState> = {
         })
     } catch (err) {
       dispatch('showAlert', {
-        text: 'Error fetchPostsWhereTags documents',
+        message: 'Error fetchPostsWhereTags documents',
         color: 'red'
       })
       console.log(err)
@@ -144,7 +141,7 @@ export const actions: ActionTree<RootState, RootState> = {
       })
     } catch (err) {
       dispatch('showAlert', {
-        text: 'Error getDocsFromCollection documents',
+        message: 'Error getDocsFromCollection documents',
         color: 'red'
       })
       console.log(err)
@@ -161,11 +158,14 @@ export const actions: ActionTree<RootState, RootState> = {
     try {
       await collection.add(docWithDate).then(async (snapshot) => {
         await dispatch('fetchDocs', { ref })
-        dispatch('showAlert', { text: 'Added document' })
+        dispatch('showAlert', { message: 'Added document' })
         console.log('Added document', snapshot)
       })
     } catch (err) {
-      dispatch('showAlert', { text: 'Error createDoc documents', color: 'red' })
+      dispatch('showAlert', {
+        message: 'Error createDoc documents',
+        color: 'red'
+      })
       console.log(err)
     } finally {
       commit('LOADING_FINISH')
@@ -180,11 +180,11 @@ export const actions: ActionTree<RootState, RootState> = {
     const collection = await fireDb.collection(ref).doc(doc.id)
     try {
       await collection.update(docWithDate).then(async () => {
-        dispatch('showAlert', { text: 'Updated document' })
+        dispatch('showAlert', { message: 'Updated document' })
         await dispatch('fetchDocs', { ref })
       })
     } catch (err) {
-      dispatch('showAlert', { text: 'Error update documents', color: 'red' })
+      dispatch('showAlert', { message: 'Error update documents', color: 'red' })
       console.log(err)
     } finally {
       commit('LOADING_FINISH')
@@ -210,14 +210,14 @@ export const actions: ActionTree<RootState, RootState> = {
           .then(async () => {
             await dispatch('fetchDocs', { ref })
             dispatch('showAlert', {
-              text: 'Document successfully deleted',
+              message: 'Document successfully deleted',
               color: 'yellow'
             })
             commit('SET_EDIT_DOC', {})
           })
       } catch (err) {
         dispatch('showAlert', {
-          text: 'Error deleteDoc documents',
+          message: 'Error deleteDoc documents',
           color: 'red'
         })
         console.log(err)
