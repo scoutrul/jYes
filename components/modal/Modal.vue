@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import CreateTag from '@/components/admin/tags/CreateTag.vue'
-import helpers from '@/mixins/helpers.js'
+import CreateTag from '~/components/tags/CreateTag.vue'
+import helpers from '~/mixins/helpers.js'
 
 export default Vue.extend({
   components: { CreateTag },

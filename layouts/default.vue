@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Alert from '~/components/pages/Alert'
-import LogIn from '~/components/pages/LogIn'
+import Alert from '@/components/misc/Alert'
+import LogIn from '@/components/misc/LogIn'
 
 export default {
   components: {

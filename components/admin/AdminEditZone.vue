@@ -6,10 +6,12 @@
 
 <script>
 import helpers from '~/mixins/helpers.js'
+import EditTag from '@/components/admin/EditTagForm'
+import EditPost from '@/components/admin/EditPostForm'
 export default {
   components: {
-    EditPost: () => import('~/components/admin/EditPost'),
-    EditTag: () => import('@/components/admin/tags/EditTag')
+    EditPost,
+    EditTag
   },
   mixins: [helpers]
 }

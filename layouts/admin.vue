@@ -10,16 +10,16 @@
 </template>
 
 <script>
-import Alert from '~/components/pages/Alert'
-import Modal from '@/components/admin/Modal/Modal'
+import Alert from '@/components/misc/Alert'
+import Modal from '@/components/modal/Modal'
 import helpers from '~/mixins/helpers.js'
 export default {
   components: {
     Modal,
     Alert,
-    CreatePostForm: () => import('@/components/admin/Modal/CreatePostForm.vue'),
-    CreateTagForm: () => import('@/components/admin/Modal/CreateTagForm'),
-    ConfirmForm: () => import('@/components/admin/Modal/ConfirmForm')
+    CreatePostForm: () => import('@/components/modal/CreatePostForm.vue'),
+    CreateTagForm: () => import('@/components/modal/CreateTagForm'),
+    ConfirmForm: () => import('@/components/modal/ConfirmForm')
   },
   mixins: [helpers]
 }

@@ -1,24 +1,18 @@
 <template lang="pug">
   .admin
-    .menu
-      gb-heading(
-        tag="h6"
-        color="white"
-        v-for="category in $store.state.admin.categories"
-        :key="category.ref"
-        @click="setCategory(category.ref)"
-        :class="{active : (category.ref === $store.state.admin.activeCategory)}") {{ category.name }}
-    DocList.docList
-    EditZone.editZone
+    AdminMenu.menu
+    AdminDocList.docList
+    AdminEditZone.editZone
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import DocList from '@/components/admin/DocList.vue'
-import EditZone from '@/components/admin/EditZone.vue'
+import AdminDocList from '~/components/admin/AdminDocList.vue'
+import AdminEditZone from '~/components/admin/AdminEditZone.vue'
+import AdminMenu from '~/components/admin/AdminMenu.vue'
 
 export default Vue.extend({
-  components: { DocList, EditZone },
+  components: { AdminDocList, AdminEditZone, AdminMenu },
   layout: 'admin',
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
@@ -29,6 +23,7 @@ export default Vue.extend({
   methods: {
     setCategory(ref: String) {
       this.$store.commit('SET_CATEGORY', ref)
+      this.$store.commit('SET_EDIT_DOC', {})
     }
   }
 })
@@ -42,13 +37,11 @@ export default Vue.extend({
 .menu {
   width: 200px;
 }
+
 .docList {
   width: 200px;
 }
 .edit {
   width: 100%;
-}
-.active {
-  background: darkslategrey;
 }
 </style>

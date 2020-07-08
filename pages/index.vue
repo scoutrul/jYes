@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { component as VueCodeHighlight } from 'vue-code-highlight'
-import TagList from '~/components/admin/tags/TagList.vue'
+import TagList from '~/components/tags/TagList.vue'
 import 'vue-code-highlight/themes/prism-tomorrow.css'
 import 'vue-code-highlight/themes/window.css'
 

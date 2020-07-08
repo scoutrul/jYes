@@ -188,6 +188,7 @@ export const actions: ActionTree<RootState, RootState> = {
       console.log(err)
     } finally {
       commit('LOADING_FINISH')
+      commit('TOGGLE_MODAL', 'showAlert')
     }
   },
 

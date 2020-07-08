@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import CreateTag from '@/components/admin/tags/CreateTag.vue'
+import CreateTag from '@/components/tags/CreateTag.vue'
 import Editor from '@/components/admin/Editor.vue'
 import helpers from '@/mixins/helpers.js'
 import {

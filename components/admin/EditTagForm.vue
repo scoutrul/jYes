@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import helpers from '@/mixins/helpers.js'
-import { TagInterface } from '@/types'
+import helpers from '~/mixins/helpers.js'
+import { TagInterface } from '~/types'
 
 export default Vue.extend({
   mixins: [helpers],

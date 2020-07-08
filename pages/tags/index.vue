@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import TagList from '~/components/admin/tags/TagList.vue'
+import TagList from '~/components/tags/TagList.vue'
 
 export default Vue.extend({
   components: { TagList },
