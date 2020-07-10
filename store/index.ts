@@ -131,10 +131,9 @@ export const actions: ActionTree<RootState, RootState> = {
     commit('LOADING_START')
     const collection = await fireDb.collection(ref)
     try {
-      await collection.get().then((snapshot) => {
+      await collection.get().then((snaps) => {
         const docs: any = []
-        snapshot.forEach((doc) => {
-          console.log(ref, doc.id, '=>', doc.data())
+        snaps.forEach((doc) => {
           docs.push({ ...doc.data(), id: doc.id })
         })
         commit('STORE_DOCS', { ref, docs })

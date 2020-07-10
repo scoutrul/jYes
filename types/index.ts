@@ -1,21 +1,31 @@
-export interface TagIdsInterface {
+export interface ITagIds {
   [index: number]: string
 }
-export interface TagInterface {
+export interface ITag {
   title: string
   id: string
   selected?: boolean
 }
-export interface TagsInterface {
-  [index: number]: TagInterface
+export interface ITags {
+  [index: number]: ITag
 }
 
-export interface PostInterface {
+export interface IPost {
   id: string
   title: string
-  tags?: TagIdsInterface
-  body: string
+  tags?: ITagIds
+  content: IContents
 }
-export interface PostsInterface {
-  [index: number]: PostInterface
+export interface IPosts {
+  [index: number]: IPost
+}
+
+export interface IContent {
+  id: number,
+  body: string,
+  isCode: boolean
+}
+
+export interface IContents {
+  [index: number]: IPost
 }

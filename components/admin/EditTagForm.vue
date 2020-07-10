@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import helpers from '~/mixins/helpers.js'
-import { TagInterface } from '~/types'
+import { ITag } from '~/types'
 
 export default Vue.extend({
   mixins: [helpers],
@@ -24,7 +24,7 @@ export default Vue.extend({
     title: ''
   }),
   watch: {
-    tag(val: TagInterface) {
+    tag(val: ITag) {
       this.title = val.title
     }
   },

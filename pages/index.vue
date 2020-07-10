@@ -4,8 +4,10 @@
     .posts
       .post(v-for="post in $store.state.docs.posts")
         gb-heading(tag='h3') {{post.title}}
-        .body(v-html="post.body")
-        VueCodeHighlight {{ post.body }}
+        template(v-for="content in post.content")
+          div(:key="content.id")
+          VueCodeHighlight(v-if="content.isCode") {{ content.body}}
+          .body(v-else v-html="content.body")
         TagList(:tags="post.tags")
         gb-divider(size="large" color="turquoise")
 </template>
