@@ -3,15 +3,15 @@
     gb-heading(tag='h3') {{ post.id }}
     gb-input(v-model="title" label="Заголовок")
     gb-button(@click="addEditor" :disabled="$store.state.loading") +Form
-    template(v-for="(editor) in editors")
-      div(:key="editor.id" v-if="editor.body")
-        gb-checkbox(@change="selectIsCode(editor)" :value="editor.isCode" label="отобразить как код")
-        Editor(:value="editor.body" :editorDataUp="(val) => editorHandle(editor.id, val)" )
-        gb-button(
-          @click="removeEditor(editor.id)"
-          :disabled="$store.state.loading"
-          color="red"
-          ) -
+
+    div(v-for="(editor) in editors" :key="editor.id")
+      gb-checkbox(@change="selectIsCode(editor)" :value="editor.isCode" label="отобразить как код")
+      Editor(:value="editor.body" :editorDataUp="(val) => editorHandle(editor.id, val)" )
+      gb-button(
+        @click="removeEditor(editor.id)"
+        :disabled="$store.state.loading"
+        color="red"
+        ) -
     gb-divider(color="blue")
     .tagList
       .tag(v-for="tag in getTags(tags)" :key="tag.id" v-if="tag.id")
@@ -27,11 +27,12 @@ import Vue from 'vue'
 import CreateTag from '@/components/tags/CreateTag.vue'
 import Editor from '@/components/admin/Editor.vue'
 import helpers from '@/mixins/helpers.js'
-import { IPost, ITag, ITagIds, ITags, IContents, IContent } from '@/types'
+import editorsMixin from '@/mixins/editors.js'
+import { IPost, ITag, ITagIds, ITags, IContents } from '@/types'
 
 export default Vue.extend({
   components: { CreateTag, Editor },
-  mixins: [helpers],
+  mixins: [helpers, editorsMixin],
   props: {
     post: {
       type: Object,
@@ -39,7 +40,12 @@ export default Vue.extend({
     }
   },
   data: (): any => ({
-    editors: [{}],
+    editors: [
+      {
+        id: 0,
+        body: ''
+      }
+    ],
     title: 'new post',
     tags: {}
   }),
@@ -47,9 +53,9 @@ export default Vue.extend({
   watch: {
     post(val: IPost, old: IPost) {
       if (val.id !== old.id) {
-        // this.tags = this.markSelectedTags(val.tags)
-        // this.title = val.title
-        // this.editors = val.content
+        this.tags = this.markSelectedTags(val.tags)
+        this.title = val.title
+        this.editors = val.content
       }
     }
   },
@@ -59,9 +65,6 @@ export default Vue.extend({
     this.editors = this.post.content
   },
   methods: {
-    selectIsCode(editor: IContent) {
-      this.editors[editor.id] = editor
-    },
     getTags(tags: ITags) {
       return tags.map((tag: string) => {
         const tempTag = this.$store.state.docs.tags.find(

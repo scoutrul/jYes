@@ -6,7 +6,7 @@
     gb-divider(color="white")
     template(v-for="(editor) in editors")
       div(:key="editor.id")
-        gb-checkbox(v-model="editors[editor.id].isCode" label="отобразить как код")
+        gb-checkbox(@change="selectIsCode(editor)" :value="editor.isCode" label="отобразить как код")
         Editor(value="" :editorDataUp="(val) => editorHandle(editor.id, val)" )
         gb-button(
           @click="removeEditor(editor.id)"
@@ -31,10 +31,11 @@ import CreateTag from '~/components/tags/CreateTag.vue'
 import { ITagIds, ITag, IContents } from '~/types'
 import Editor from '~/components/admin/Editor.vue'
 import helpers from '@/mixins/helpers.js'
+import editorsMixin from '@/mixins/editors.js'
 
 export default Vue.extend({
   components: { CreateTag, Editor },
-  mixins: [helpers],
+  mixins: [helpers, editorsMixin],
   data: (): any => ({
     editors: [
       {
