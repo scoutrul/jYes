@@ -3,7 +3,7 @@ import 'firebase/firestore'
 import 'firebase/auth'
 if (!firebase.apps.length) {
   const config = {
-    apiKey: 'AIzaSyBEEtrcWAchxKweASIzc4UuUe05-Yy-q7M',
+    apiKey: process.env.FIREBASE_KEY,
     authDomain: 'jyesru.firebaseapp.com',
     databaseURL: 'https://jyesru.firebaseio.com',
     projectId: 'jyesru',
