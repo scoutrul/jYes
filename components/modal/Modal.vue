@@ -49,11 +49,13 @@ export default Vue.extend({
   opacity: 1;
 }
 .modal .container {
-  position: relative;
+  position: fixed;
+  top: 10%;
+  left: 50%;
   padding: 40px;
-  margin: 10vh auto auto;
   background-color: #546e98;
   opacity: 0;
+  transform: translateX(-50%);
   transition: 0.2s ease-out 0.1s;
 }
 .modal.active .container {
