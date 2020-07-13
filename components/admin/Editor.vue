@@ -2,6 +2,7 @@
   no-ssr
     VueEditor(
       v-model="content"
+      :editorToolbar="customToolbar"
     )
 </template>
 
@@ -19,7 +20,13 @@ export default {
   },
   props: ['value', 'editorDataUp'],
   data: () => ({
-    content: '<h1>Some initial content</h1>'
+    content: '<h1>Some initial content</h1>',
+    customToolbar: [
+      [{ header: [false, 1, 2] }],
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link', 'image', 'video', 'code-block']
+    ]
   }),
   watch: {
     content(val) {

@@ -2,9 +2,8 @@
     .posts
       .post(v-for="post in posts")
         gb-heading(tag='h3') {{post.title}}
-        template(v-for="content in post.content")
-          div(:key="content.id")
-            VueCodeHighlight(v-if="content.isCode") {{ content.body}}
+          div(v-for="content in post.content" :key="content.id")
+            VueCodeHighlight(v-if="content.isCode") {{ convertBody(content.body)}}
             .body(v-else v-html="content.body")
         TagList(:tags="post.tags")
         gb-divider(size="large" color="turquoise")
@@ -19,7 +18,15 @@ import 'vue-code-highlight/themes/window.css'
 
 export default Vue.extend({
   components: { TagList, VueCodeHighlight },
-  props: ['posts']
+  props: ['posts'],
+  methods: {
+    convertBody(body) {
+      return body
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&amp;/gi, '&')
+    }
+  }
 })
 </script>
 

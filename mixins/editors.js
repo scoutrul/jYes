@@ -36,7 +36,11 @@ export default {
         if (editor.isCode) {
           return {
             ...editor,
-            body: editor.body.replace('<p>', '').replace('</p>', '')
+            body: editor.body
+              .replace('<p>', '')
+              .replace(`<pre class="ql-syntax" spellcheck="false">`, '')
+              .replace(`</pre>`, '')
+              .replace('</p>', '')
           }
         } else {
           return editor

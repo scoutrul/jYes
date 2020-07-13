@@ -30,7 +30,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~plugins/vuedarkmode.js',
+    '~/plugins/vuedarkmode.js',
     '~/plugins/firebase.js',
     { src: "~/plugins/vue2-editor", ssr: false }
   ],
