@@ -35,7 +35,9 @@ export default {
     }
   },
   mounted() {
-    this.content = this.value
+    this.content = this.value.isCode
+      ? `<pre>${this.value.body}</pre>`
+      : this.value.body
   }
 }
 </script>

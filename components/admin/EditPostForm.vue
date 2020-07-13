@@ -6,7 +6,7 @@
 
     div(v-for="(editor) in editors" :key="editor.id")
       gb-checkbox(@change="selectIsCode(editor)" :value="editor.isCode" label="отобразить как код")
-      Editor(:value="editor.body" :editorDataUp="(val) => editorHandle(editor.id, val)" )
+      Editor(:value="editor" :editorDataUp="(val) => editorHandle(editor.id, val)" )
       gb-button(
         @click="removeEditor(editor.id)"
         :disabled="$store.state.loading"
