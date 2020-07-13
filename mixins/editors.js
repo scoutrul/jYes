@@ -23,6 +23,7 @@ export default {
       ]
     },
     editorHandle(id, val) {
+      console.log(id, val)
       this.editors = this.editors.map((editor) => {
         if (id === editor.id) {
           return { ...editor, body: val }

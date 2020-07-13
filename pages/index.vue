@@ -1,33 +1,19 @@
 <template lang="pug">
   .container
     gb-divider(size="large" color="purple")
-    .posts
-      .post(v-for="post in $store.state.docs.posts")
-        gb-heading(tag='h3') {{post.title}}
-        template(v-for="content in post.content")
-          div(:key="content.id")
-          VueCodeHighlight(v-if="content.isCode") {{ content.body}}
-          .body(v-else v-html="content.body")
-        TagList(:tags="post.tags")
-        gb-divider(size="large" color="turquoise")
+    PostList(:posts="$store.state.docs.posts")
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { component as VueCodeHighlight } from 'vue-code-highlight'
-import TagList from '~/components/tags/TagList.vue'
-import 'vue-code-highlight/themes/prism-tomorrow.css'
-import 'vue-code-highlight/themes/window.css'
+import PostList from '@/components/posts/PostList.vue'
 
 export default Vue.extend({
-  components: { TagList, VueCodeHighlight },
+  components: { PostList },
   async fetch() {
     await this.$store.dispatch('fetchDocs', { ref: 'tags' })
     await this.$store.dispatch('fetchDocs', { ref: 'posts' })
-  },
-  data: () => ({}),
-
-  methods: {}
+  }
 })
 </script>
 

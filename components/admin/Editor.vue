@@ -1,39 +1,44 @@
-<template>
-  <ckeditor
-    :editor="editor"
-    :config="editorConfig"
-    :value="value || ''"
-    :disabled="$store.state.loading"
-    @input="editorDataUp"
-  ></ckeditor>
+<template lang="pug">
+  no-ssr
+    VueEditor(
+      v-model="content"
+    )
 </template>
 
 <script>
-let ClassicEditor
-let CKEditor
+let VueEditor
 if (process.client) {
-  ClassicEditor = require('@ckeditor/ckeditor5-build-classic')
-  CKEditor = require('@ckeditor/ckeditor5-vue')
+  VueEditor = require('vue2-editor').VueEditor
 } else {
-  CKEditor = { component: { template: '<div></div>' } }
+  VueEditor = { component: { template: '<div></div>' } }
 }
+
 export default {
-  name: 'Editor',
   components: {
-    ckeditor: CKEditor.component
+    VueEditor
   },
   props: ['value', 'editorDataUp'],
   data: () => ({
-    editor: ClassicEditor,
-    editorConfig: {
-      // The configuration of the editor.
+    content: '<h1>Some initial content</h1>'
+  }),
+  watch: {
+    content(val) {
+      console.log(val)
+      this.editorDataUp(val)
     }
-  })
+  },
+  mounted() {
+    this.content = this.value
+  }
 }
 </script>
 
-<style>
-.ck.ck-content {
-  min-height: 200px;
+<style lang="css" scoped>
+@import 'vue2-editor/dist/vue2-editor.css';
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.bubble.css';
+@import 'quill/dist/quill.snow.css';
+.quillWrapper {
+  background: #fff;
 }
 </style>
