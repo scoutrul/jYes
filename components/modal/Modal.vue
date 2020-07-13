@@ -49,7 +49,7 @@ export default Vue.extend({
   opacity: 1;
 }
 .modal .container {
-  position: fixed;
+  position: relative;
   top: 10%;
   left: 50%;
   padding: 40px;
