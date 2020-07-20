@@ -29,16 +29,22 @@ export default {
     ]
   }),
   watch: {
-    content(val) {
-      console.log(val)
-      this.editorDataUp(val)
+    content(val, old) {
+      if (val && val !== old) {
+        this.editorDataUp(val)
+      }
+    },
+    value(val, old) {
+      if (val.body !== old.body) {
+        this.content = this.value.body
+      }
     }
-  },
-  mounted() {
-    this.content = this.value.isCode
-      ? `<pre>${this.value.body}</pre>`
-      : this.value.body
   }
+  // mounted() {
+  //   this.content = this.value.isCode
+  //     ? `<pre>${this.value.body}</pre>`
+  //     : this.value.body
+  // }
 }
 </script>
 
