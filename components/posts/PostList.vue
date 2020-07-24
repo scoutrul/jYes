@@ -20,7 +20,7 @@ export default Vue.extend({
   components: { TagList, VueCodeHighlight },
   props: ['posts'],
   methods: {
-    convertBody(body) {
+    convertBody(body: String) {
       return body
         .replace(/&lt;/gi, '<')
         .replace(/&gt;/gi, '>')
@@ -30,4 +30,14 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped></style>
+<style>
+pre[class*='language-'] {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 400px;
+  max-height: 90vh;
+}
+pre code {
+  font-size: 1rem;
+}
+</style>

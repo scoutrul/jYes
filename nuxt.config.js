@@ -32,7 +32,7 @@ export default {
   plugins: [
     '~/plugins/vuedarkmode.js',
     '~/plugins/firebase.js',
-    { src: "~/plugins/vue2-editor", ssr: false }
+    { src: '~/plugins/vue2-editor', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

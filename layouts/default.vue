@@ -23,7 +23,8 @@ body {
 }
 .container {
   width: 100%;
-  max-width: 640px;
+  max-width: 940px;
+  margin: auto;
 }
 .mainClass {
   position: relative;
@@ -35,7 +36,6 @@ body {
   height: 100%;
   min-height: 200vh;
   flex-direction: column;
-  justify-content: center;
   justify-content: flex-start;
   padding: 10px 0;
   background: #a6cbe0;

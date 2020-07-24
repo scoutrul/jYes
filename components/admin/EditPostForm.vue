@@ -2,7 +2,6 @@
   div(v-if="post.id")
     gb-heading(tag='h3') {{ post.id }}
     gb-input(v-model="title" label="Заголовок")
-    gb-button(@click="addEditor" :disabled="$store.state.loading") +Form
 
     div(v-for="(editor) in editors" :key="editor.id")
       gb-checkbox(@change="selectIsCode(editor)" :value="editor.isCode" label="отобразить как код")
@@ -11,7 +10,9 @@
         @click="removeEditor(editor.id)"
         :disabled="$store.state.loading"
         color="red"
-        ) -
+        ) Удалить
+    gb-divider(color="white")
+    gb-button(@click="addEditor" :disabled="$store.state.loading") + блок
     gb-divider(color="blue")
     .tagList
       .tag(v-for="tag in getTags(tags)" :key="tag.id" v-if="tag.id")
