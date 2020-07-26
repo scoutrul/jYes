@@ -1,6 +1,6 @@
 <template lang="pug">
   .modal(:class="{active : modalState(name)}")
-    .container
+    .container(:style="{ transform: `translateY(0%)`}")
       slot
       gb-button(@click="closeModal").closeBtn x
 
@@ -42,6 +42,7 @@ export default Vue.extend({
   height: 100%;
   background-color: rgba(33, 43, 59, 0.74);
   opacity: 0;
+  transform: translateX(-50%);
 }
 .modal.active {
   z-index: 1000;
@@ -50,12 +51,12 @@ export default Vue.extend({
 }
 .modal .container {
   position: relative;
-  top: 10%;
+  top: 0%;
   left: 50%;
   padding: 40px;
+  margin: 10vh auto !important;
   background-color: #546e98;
   opacity: 0;
-  transform: translateX(-50%);
   transition: 0.2s ease-out 0.1s;
 }
 .modal.active .container {

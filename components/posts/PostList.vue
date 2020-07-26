@@ -36,6 +36,7 @@ pre[class*='language-'] {
   width: 100% !important;
   min-height: 400px;
   max-height: 90vh;
+  padding-right: 0 !important;
 }
 pre code {
   font-size: 1rem;
